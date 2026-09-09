@@ -344,13 +344,28 @@ MEASURES = [
     ("Transactions per Card", "DIVIDE([Approved Transactions], [Active Cards])", DEC1, None),
     ("Spend per Card", "DIVIDE([Spend], [Active Cards])", USD, None),
     ("Spend per Client", "DIVIDE([Spend], [Active Clients])", USD, None),
-    ("Total Credit Limit", "SUM('Card'[Credit Limit])", USD,
-     "Summed over the Card table, so a date filter does not move it - a limit is a standing\n"
-     "figure, not something that happened in March."),
-    ("Spend to Limit", "DIVIDE([Spend], [Total Credit Limit])", PCT,
-     "Spend in the period against the cards' combined limit. Not utilisation in the credit\n"
-     "sense - there are no balances in this file - but it is the ratio that shows which\n"
-     "segments turn their limit over and which sit on it."),
+    ("Total Credit Limit",
+     "CALCULATE(\n"
+     "    SUM('Card'[Credit Limit]),\n"
+     "    CROSSFILTER('Card'[Card], 'Transactions'[Card Key], BOTH)\n"
+     ")", USD,
+     "The combined limit of the cards in view. CROSSFILTER is doing real work here: filters\n"
+     "run from the one side to the many, so a credit-score band selected on Client reaches the\n"
+     "fact and stops. A plain SUM over Card returned the whole book's $10.3m on every row of\n"
+     "the band table, identical five times over, and made the ratio below read 317% for one\n"
+     "band. Turning the join on for this measure lets the filtered fact pick the cards back."),
+    ("Years in Period", "DIVIDE(COUNTROWS('Date'), 365.25)", "0.0",
+     "The length of the visible period in years, so a rate can be annualised without\n"
+     "hard-coding ten."),
+    ("Annual Spend to Limit",
+     "DIVIDE(\n"
+     "    DIVIDE([Spend], [Years in Period]),\n"
+     "    [Total Credit Limit]\n"
+     ")", PCT,
+     "Spend per year against the cards' combined limit - how hard the book turns its limit\n"
+     "over. Annualised on purpose: the raw ten-year ratio reads 711%, which is arithmetically\n"
+     "fine and useless on a card. Not utilisation in the credit sense either, because the\n"
+     "file carries no balances."),
 
     # ---- fraud
     ("Labelled Transactions",

@@ -82,18 +82,36 @@ table Metrics
 		formatString: \$#,0
 		lineageTag: 96a8e24f-dfbc-537b-8ba3-2d8c28846b52
 
-	/// Summed over the Card table, so a date filter does not move it - a limit is a standing
-	/// figure, not something that happened in March.
-	measure 'Total Credit Limit' = SUM('Card'[Credit Limit])
+	/// The combined limit of the cards in view. CROSSFILTER is doing real work here: filters
+	/// run from the one side to the many, so a credit-score band selected on Client reaches the
+	/// fact and stops. A plain SUM over Card returned the whole book's $10.3m on every row of
+	/// the band table, identical five times over, and made the ratio below read 317% for one
+	/// band. Turning the join on for this measure lets the filtered fact pick the cards back.
+	measure 'Total Credit Limit' =
+			CALCULATE(
+			    SUM('Card'[Credit Limit]),
+			    CROSSFILTER('Card'[Card], 'Transactions'[Card Key], BOTH)
+			)
 		formatString: \$#,0
 		lineageTag: 01c68310-4564-5d5a-8642-2259371794a5
 
-	/// Spend in the period against the cards' combined limit. Not utilisation in the credit
-	/// sense - there are no balances in this file - but it is the ratio that shows which
-	/// segments turn their limit over and which sit on it.
-	measure 'Spend to Limit' = DIVIDE([Spend], [Total Credit Limit])
+	/// The length of the visible period in years, so a rate can be annualised without
+	/// hard-coding ten.
+	measure 'Years in Period' = DIVIDE(COUNTROWS('Date'), 365.25)
+		formatString: 0.0
+		lineageTag: cf8acc8d-c22c-53d4-b958-16e3b5e4cd2b
+
+	/// Spend per year against the cards' combined limit - how hard the book turns its limit
+	/// over. Annualised on purpose: the raw ten-year ratio reads 711%, which is arithmetically
+	/// fine and useless on a card. Not utilisation in the credit sense either, because the
+	/// file carries no balances.
+	measure 'Annual Spend to Limit' =
+			DIVIDE(
+			    DIVIDE([Spend], [Years in Period]),
+			    [Total Credit Limit]
+			)
 		formatString: 0.0%
-		lineageTag: 80cfa383-520a-5ed6-b570-7beb73d4d8d1
+		lineageTag: 8eee7522-e9e5-5e36-b0c5-e7db1487642a
 
 	/// Rows the source actually adjudicated. Two thirds of the file.
 	measure 'Labelled Transactions' = CALCULATE([Transactions], KEEPFILTERS('Fraud Status'[Is Labelled] = "Yes"))

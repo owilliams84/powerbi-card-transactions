@@ -117,12 +117,12 @@
                       "Entity": "Metrics"
                     }
                   },
-                  "Property": "Spend to Limit"
+                  "Property": "Annual Spend to Limit"
                 }
               },
-              "queryRef": "Metrics.Spend to Limit",
-              "nativeQueryRef": "Spend to Limit",
-              "displayName": "Spend to limit"
+              "queryRef": "Metrics.Annual Spend to Limit",
+              "nativeQueryRef": "Annual Spend to Limit",
+              "displayName": "Spend to limit, a year"
             },
             {
               "field": {

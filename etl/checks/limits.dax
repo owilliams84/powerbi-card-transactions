@@ -1,0 +1,10 @@
+EVALUATE
+SUMMARIZECOLUMNS(
+    'Client'[Credit Score Band],
+    "Clients", [Active Clients],
+    "Cards", [Active Cards],
+    "Spend", [Spend],
+    "Limit", [Total Credit Limit],
+    "AnnualToLimit", [Annual Spend to Limit],
+    "Years", [Years in Period]
+)

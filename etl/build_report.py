@@ -145,8 +145,17 @@ def categorical_filter(name: str, table: str, col: str, values: list, alias: str
 # --------------------------------------------------------------------------------------------
 
 
-def chrome(title: str | None = None, transparent: bool = False,
-           subtitle: str | None = None) -> dict:
+def chrome(title: str | None = None, subtitle: str | None = None, *,
+           transparent: bool = False) -> dict:
+    """Card background, hairline border and the small bold title every panel shares.
+
+    subtitle is the SECOND positional parameter on purpose. It used to be third, behind
+    transparent, and every chart in this file called chrome("Title", "Subtitle") - so the
+    caption went into transparent, which is truthy, and the subtitle was dropped. The theme
+    paints the card background anyway, so the panels still looked right and the analysis in
+    the captions simply never rendered. transparent is keyword-only now so it cannot happen
+    again.
+    """
     show = not transparent
     out = {
         "padding": obj(top=lit(8.0), bottom=lit(8.0), left=lit(10.0), right=lit(10.0)),
@@ -539,8 +548,7 @@ def page_overview() -> tuple[dict, list[dict]]:
             "dataPoint": value_colours("Channel", "Channel", CHANNEL_COLOURS),
         },
         container=chrome("Channel mix by year",
-                         "Chip goes from nothing to two thirds between 2014 and 2015 - "
-                         "see page 2 before reading that as a migration"),
+                         "Nothing to two thirds in one month - see page 2"),
     ))
 
     v.append(visual(
@@ -558,7 +566,7 @@ def page_overview() -> tuple[dict, list[dict]]:
             "dataPoint": series_colour({"Metrics.Approved Transactions": NAVY}),
         },
         container=chrome("Approved transactions by hour of day",
-                         "58% of spending happens between 9am and 6pm, and 11am is the busiest hour - thirteen times midnight"),
+                         "58% falls between 9am and 6pm; 11am is the peak"),
     ))
 
     return page("pgOverview", "Overview"), v
@@ -794,7 +802,7 @@ def page_customers() -> tuple[dict, list[dict]]:
         m("Active Cards", "Active cards"),
         m("Spend per Client", "Spend per client"),
         m("Total Credit Limit", "Combined limit"),
-        m("Spend to Limit", "Spend to limit"),
+        m("Annual Spend to Limit", "Spend to limit, a year"),
     ]))
 
     v.append(visual(
@@ -862,7 +870,7 @@ def page_customers() -> tuple[dict, list[dict]]:
             m("Spend", "Spend"),
             m("Average Transaction", "Average purchase"),
             m("Total Credit Limit", "Combined limit"),
-            m("Spend to Limit", "Spend to limit"),
+            m("Annual Spend to Limit", "Spend to limit, a year"),
             m("Decline Rate %", "Decline rate"),
             m("Fraud Rate per 10k", "Fraud/10k"),
         ],
