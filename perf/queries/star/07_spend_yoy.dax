@@ -1,0 +1,1 @@
+EVALUATE SUMMARIZECOLUMNS('Date'[Year], "Spend", [Spend], "PY", [Spend PY], "YoY", [Spend YoY %])

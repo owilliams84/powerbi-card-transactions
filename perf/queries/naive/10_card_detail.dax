@@ -1,0 +1,1 @@
+EVALUATE TOPN(200, SUMMARIZECOLUMNS('Transactions'[Card ID], "Spend", [Spend], "Txn", [Transactions], "Decline", [Decline Rate %]), [Spend], DESC)

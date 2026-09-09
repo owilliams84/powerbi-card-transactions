@@ -1,0 +1,1 @@
+EVALUATE ROW("Spend", [Spend], "Approved", [Approved Transactions], "Declines", [Declined Transactions])

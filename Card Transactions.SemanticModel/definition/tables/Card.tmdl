@@ -107,7 +107,7 @@ table Card
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_card.csv"), [Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Source = Csv.Document(File.Contents("C:\\Users\\OmarWilliams\\OneDrive - MILESTONEBI\\Projects\\Claude Projects\\ClaudeCode\\Card-Transactions-Fraud\\data\\dim_card.csv"), [Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"CardKey", Int64.Type}, {"ClientID", Int64.Type}, {"CardBrand", type text}, {"CardType", type text}, {"HasChip", type text}, {"CreditLimit", type number}, {"CreditLimitBand", type text}, {"CreditLimitBandSort", Int64.Type}, {"AccountOpened", type date}, {"AccountOpenedYear", Int64.Type}, {"CardsIssued", Int64.Type}, {"PinLastChanged", Int64.Type}})
 				in

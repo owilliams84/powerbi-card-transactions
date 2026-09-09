@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.5.0/schema.json",
+  "name": "vYear",
+  "position": {
+    "x": 24,
+    "y": 180,
+    "z": 1,
+    "width": 900,
+    "height": 400,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Transactions"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "Transactions.Year",
+              "nativeQueryRef": "Year"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Transactions"
+                    }
+                  },
+                  "Property": "Spend"
+                }
+              },
+              "queryRef": "Transactions.Spend",
+              "nativeQueryRef": "Spend"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

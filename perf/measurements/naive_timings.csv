@@ -1,0 +1,11 @@
+﻿"query","cold_ms","warm_ms","iterations","rows"
+"01_total_spend","11.4","5.1","5",
+"02_spend_by_year","18.6","5.5","5","10"
+"03_spend_by_channel","13.3","5.7","5","3"
+"04_spend_by_category","20.1","11.1","5","108"
+"05_fraud_by_channel","14.6","8.6","5","3"
+"06_distinct_counts","36.6","5","5",
+"07_spend_yoy","38.1","7.9","5","10"
+"08_card_by_year","871.8","834.8","5","4910"
+"09_cards_by_month","51.7","12.3","5","118"
+"10_card_detail","33","15.7","5","200"

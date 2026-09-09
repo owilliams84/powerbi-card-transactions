@@ -1,0 +1,1 @@
+EVALUATE SUMMARIZECOLUMNS('Date'[Month Year], "Cards", [Active Cards], "Spend", [Spend], "Fraud", [Fraud Transactions])

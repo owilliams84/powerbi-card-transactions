@@ -1,0 +1,1 @@
+EVALUATE SUMMARIZECOLUMNS('Channel'[Channel], "Labelled", [Labelled Transactions], "Fraud", [Fraud Transactions], "Per10k", [Fraud Rate per 10k])

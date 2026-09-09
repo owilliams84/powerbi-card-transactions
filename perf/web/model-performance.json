@@ -1,0 +1,429 @@
+{
+  "star": {
+    "total_bytes": 32254352.0,
+    "dictionary_bytes": 20906800.0,
+    "data_bytes": 11347552.0,
+    "hierarchy_bytes": 253920.0,
+    "tables": 18,
+    "columns": 96,
+    "top_columns": [
+      {
+        "column": "Transactions[Amount]",
+        "total": 4501888,
+        "dictionary": 144,
+        "data": 4501744,
+        "hierarchy": 161512
+      },
+      {
+        "column": "Transactions[Date]",
+        "total": 2123728,
+        "dictionary": 170616,
+        "data": 1953112,
+        "hierarchy": 28768
+      },
+      {
+        "column": "Transactions[Card Key]",
+        "total": 1951692,
+        "dictionary": 11052,
+        "data": 1940640,
+        "hierarchy": 4640
+      },
+      {
+        "column": "Transactions[Client Key]",
+        "total": 1198040,
+        "dictionary": 5016,
+        "data": 1193024,
+        "hierarchy": 1328
+      },
+      {
+        "column": "Geography[Location]",
+        "total": 1067920,
+        "dictionary": 1066640,
+        "data": 1280,
+        "hierarchy": 1040
+      },
+      {
+        "column": "Merchant Category[Merchant Category]",
+        "total": 1067656,
+        "dictionary": 1066512,
+        "data": 1144,
+        "hierarchy": 912
+      },
+      {
+        "column": "Geography[Country]",
+        "total": 1067120,
+        "dictionary": 1066240,
+        "data": 880,
+        "hierarchy": 640
+      },
+      {
+        "column": "Geography[State Code]",
+        "total": 1066704,
+        "dictionary": 1066064,
+        "data": 640,
+        "hierarchy": 464
+      },
+      {
+        "column": "Merchant Category[Category Group]",
+        "total": 1066080,
+        "dictionary": 1065752,
+        "data": 328,
+        "hierarchy": 144
+      },
+      {
+        "column": "Date[Quarter]",
+        "total": 1066040,
+        "dictionary": 1065680,
+        "data": 360,
+        "hierarchy": 80
+      },
+      {
+        "column": "Card[Card Brand]",
+        "total": 1066000,
+        "dictionary": 1065680,
+        "data": 320,
+        "hierarchy": 80
+      },
+      {
+        "column": "Date[Is Weekend]",
+        "total": 1065984,
+        "dictionary": 1065664,
+        "data": 320,
+        "hierarchy": 80
+      }
+    ]
+  },
+  "naive": {
+    "total_bytes": 199659920.0,
+    "dictionary_bytes": 145865120.0,
+    "data_bytes": 53794800.0,
+    "hierarchy_bytes": 25192136.0,
+    "tables": 1,
+    "columns": 32,
+    "top_columns": [
+      {
+        "column": "Transactions[Transaction ID]",
+        "total": 95626272,
+        "dictionary": 77677928,
+        "data": 17948344,
+        "hierarchy": 13461168
+      },
+      {
+        "column": "Transactions[Timestamp]",
+        "total": 60972328,
+        "dictionary": 45563328,
+        "data": 15409000,
+        "hierarchy": 10921824
+      },
+      {
+        "column": "Transactions[Spend Amount]",
+        "total": 4952268,
+        "dictionary": 1402244,
+        "data": 3550024,
+        "hierarchy": 321920
+      },
+      {
+        "column": "Transactions[Amount]",
+        "total": 4534352,
+        "dictionary": 144,
+        "data": 4534208,
+        "hierarchy": 161512
+      },
+      {
+        "column": "Transactions[Merchant ID]",
+        "total": 3280040,
+        "dictionary": 1463296,
+        "data": 1816744,
+        "hierarchy": 144048
+      },
+      {
+        "column": "Transactions[Merchant Zip]",
+        "total": 2696912,
+        "dictionary": 1418424,
+        "data": 1278488,
+        "hierarchy": 105472
+      },
+      {
+        "column": "Transactions[Month Year]",
+        "total": 2563256,
+        "dictionary": 1066592,
+        "data": 1496664,
+        "hierarchy": 992
+      },
+      {
+        "column": "Transactions[Merchant City]",
+        "total": 2372376,
+        "dictionary": 1237416,
+        "data": 1134960,
+        "hierarchy": 55568
+      },
+      {
+        "column": "Transactions[Card ID]",
+        "total": 1786744,
+        "dictionary": 1070248,
+        "data": 716496,
+        "hierarchy": 4640
+      },
+      {
+        "column": "Transactions[MCC]",
+        "total": 1727752,
+        "dictionary": 1066520,
+        "data": 661232,
+        "hierarchy": 912
+      },
+      {
+        "column": "Transactions[Merchant Category]",
+        "total": 1727744,
+        "dictionary": 1066512,
+        "data": 661232,
+        "hierarchy": 912
+      },
+      {
+        "column": "Transactions[Card Account Opened]",
+        "total": 1616184,
+        "dictionary": 1067184,
+        "data": 549000,
+        "hierarchy": 1584
+      }
+    ]
+  },
+  "timings": [
+    {
+      "query": "01_total_spend",
+      "cold_star": 11.5,
+      "cold_naive": 11.4,
+      "warm_star": 2.9,
+      "warm_naive": 5.1,
+      "rows": null,
+      "match": true,
+      "separable": false
+    },
+    {
+      "query": "02_spend_by_year",
+      "cold_star": 11.5,
+      "cold_naive": 18.6,
+      "warm_star": 3.5,
+      "warm_naive": 5.5,
+      "rows": 10,
+      "match": true,
+      "separable": false
+    },
+    {
+      "query": "03_spend_by_channel",
+      "cold_star": 12.2,
+      "cold_naive": 13.3,
+      "warm_star": 3.3,
+      "warm_naive": 5.7,
+      "rows": 3,
+      "match": true,
+      "separable": false
+    },
+    {
+      "query": "04_spend_by_category",
+      "cold_star": 16.5,
+      "cold_naive": 20.1,
+      "warm_star": 7.7,
+      "warm_naive": 11.1,
+      "rows": 108,
+      "match": true,
+      "separable": false
+    },
+    {
+      "query": "05_fraud_by_channel",
+      "cold_star": 12.5,
+      "cold_naive": 14.6,
+      "warm_star": 3.7,
+      "warm_naive": 8.6,
+      "rows": 3,
+      "match": true,
+      "separable": false
+    },
+    {
+      "query": "06_distinct_counts",
+      "cold_star": 12.0,
+      "cold_naive": 36.6,
+      "warm_star": 3.4,
+      "warm_naive": 5.0,
+      "rows": null,
+      "match": true,
+      "separable": true
+    },
+    {
+      "query": "07_spend_yoy",
+      "cold_star": 18.5,
+      "cold_naive": 38.1,
+      "warm_star": 5.8,
+      "warm_naive": 7.9,
+      "rows": 10,
+      "match": false,
+      "separable": true
+    },
+    {
+      "query": "08_card_by_year",
+      "cold_star": 880.4,
+      "cold_naive": 871.8,
+      "warm_star": 794.6,
+      "warm_naive": 834.8,
+      "rows": 4910,
+      "match": true,
+      "separable": true
+    },
+    {
+      "query": "09_cards_by_month",
+      "cold_star": 30.2,
+      "cold_naive": 51.7,
+      "warm_star": 9.7,
+      "warm_naive": 12.3,
+      "rows": 118,
+      "match": true,
+      "separable": true
+    },
+    {
+      "query": "10_card_detail",
+      "cold_star": 22.9,
+      "cold_naive": 33.0,
+      "warm_star": 13.6,
+      "warm_naive": 15.7,
+      "rows": 200,
+      "match": true,
+      "separable": true
+    }
+  ],
+  "divergence": [
+    {
+      "query": "07_spend_yoy",
+      "star": [
+        {
+          "Date[Year]": "2010",
+          "[PY]": null,
+          "[Spend]": "7040347.25",
+          "[YoY]": null
+        },
+        {
+          "Date[Year]": "2011",
+          "[PY]": "7040347.25",
+          "[Spend]": "7272900.63",
+          "[YoY]": "0.0330315212790101"
+        },
+        {
+          "Date[Year]": "2012",
+          "[PY]": "7272900.63",
+          "[Spend]": "7416433.65",
+          "[YoY]": "0.0197353198265816"
+        },
+        {
+          "Date[Year]": "2013",
+          "[PY]": "7416433.65000001",
+          "[Spend]": "7539588.86",
+          "[YoY]": "0.0166057185720249"
+        },
+        {
+          "Date[Year]": "2014",
+          "[PY]": "7539588.86",
+          "[Spend]": "7504211.93",
+          "[YoY]": "-0.00469215638371013"
+        },
+        {
+          "Date[Year]": "2015",
+          "[PY]": "7504211.93",
+          "[Spend]": "7640437.69",
+          "[YoY]": "0.0181532399765262"
+        },
+        {
+          "Date[Year]": "2016",
+          "[PY]": "7640437.69",
+          "[Spend]": "7636707.95",
+          "[YoY]": "-0.000488157897665742"
+        },
+        {
+          "Date[Year]": "2017",
+          "[PY]": "7636707.95000001",
+          "[Spend]": "7606150.84",
+          "[YoY]": "-0.0040013458940782"
+        },
+        {
+          "Date[Year]": "2018",
+          "[PY]": "7606150.84",
+          "[Spend]": "7627792.83",
+          "[YoY]": "0.0028453274797272"
+        },
+        {
+          "Date[Year]": "2019",
+          "[PY]": "6347499.91",
+          "[Spend]": "6284003.06",
+          "[YoY]": "-0.0100034424419553"
+        }
+      ],
+      "naive": [
+        {
+          "Transactions[Year]": "2010",
+          "[PY]": null,
+          "[Spend]": "7040347.25",
+          "[YoY]": null
+        },
+        {
+          "Transactions[Year]": "2011",
+          "[PY]": "7040347.25",
+          "[Spend]": "7272900.63",
+          "[YoY]": "0.0330315212790108"
+        },
+        {
+          "Transactions[Year]": "2012",
+          "[PY]": "7272900.63",
+          "[Spend]": "7416433.65",
+          "[YoY]": "0.0197353198265821"
+        },
+        {
+          "Transactions[Year]": "2013",
+          "[PY]": "7416433.65",
+          "[Spend]": "7539588.86",
+          "[YoY]": "0.0166057185720255"
+        },
+        {
+          "Transactions[Year]": "2014",
+          "[PY]": "7539588.86",
+          "[Spend]": "7504211.93",
+          "[YoY]": "-0.00469215638371038"
+        },
+        {
+          "Transactions[Year]": "2015",
+          "[PY]": "7504211.93",
+          "[Spend]": "7640437.69",
+          "[YoY]": "0.0181532399765262"
+        },
+        {
+          "Transactions[Year]": "2016",
+          "[PY]": "7640437.69",
+          "[Spend]": "7636707.95",
+          "[YoY]": "-0.00048815789766623"
+        },
+        {
+          "Transactions[Year]": "2017",
+          "[PY]": "7636707.95",
+          "[Spend]": "7606150.84",
+          "[YoY]": "-0.00400134589407735"
+        },
+        {
+          "Transactions[Year]": "2018",
+          "[PY]": "7606150.84",
+          "[Spend]": "7627792.83",
+          "[YoY]": "0.00284532747972695"
+        },
+        {
+          "Transactions[Year]": "2019",
+          "[PY]": "7627792.83",
+          "[Spend]": "6284003.06",
+          "[YoY]": "-0.176170197585191"
+        }
+      ]
+    }
+  ],
+  "method": {
+    "iterations": 5,
+    "statistic": "median",
+    "noise_floor_ms": 8.0,
+    "hierarchies_included": true,
+    "queries_matching": 9,
+    "queries_total": 10
+  }
+}

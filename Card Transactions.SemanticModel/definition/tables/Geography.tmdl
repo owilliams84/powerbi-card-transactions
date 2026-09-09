@@ -49,7 +49,7 @@ table Geography
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_geography.csv"), [Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Source = Csv.Document(File.Contents("C:\\Users\\OmarWilliams\\OneDrive - MILESTONEBI\\Projects\\Claude Projects\\ClaudeCode\\Card-Transactions-Fraud\\data\\dim_geography.csv"), [Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"GeoKey", Int64.Type}, {"Location", type text}, {"LocationType", type text}, {"StateCode", type text}, {"Country", type text}})
 				in

@@ -1,0 +1,1 @@
+EVALUATE SUMMARIZECOLUMNS('Transactions'[Merchant Category], "Spend", [Spend], "Txn", [Transactions])

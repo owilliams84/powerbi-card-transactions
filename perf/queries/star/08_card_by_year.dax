@@ -1,0 +1,1 @@
+EVALUATE SUMMARIZECOLUMNS('Card'[Card], 'Date'[Year], "Spend", [Spend], "Txn", [Transactions], "Decline", [Decline Rate %])

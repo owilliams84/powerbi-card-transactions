@@ -1,0 +1,1 @@
+EVALUATE SUMMARIZECOLUMNS('Channel'[Channel], "Spend", [Spend], "Txn", [Transactions])

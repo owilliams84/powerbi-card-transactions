@@ -1,0 +1,269 @@
+/// One table. Every dimension merged in, nothing dropped, keys as text and the
+/// timestamp to the minute. This is the control in a performance comparison, not a
+/// recommendation.
+table Transactions
+	lineageTag: 9c700e5d-6589-5302-9281-4ee3570497cf
+
+	column 'Transaction ID'
+		dataType: string
+		lineageTag: 0092f03c-9cee-5841-9b9d-de23c05c1937
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+	column Timestamp
+		dataType: dateTime
+		lineageTag: ed548a67-17a8-5521-89b0-bd35b3604f99
+		summarizeBy: none
+		sourceColumn: Timestamp
+
+	column 'Client ID'
+		dataType: string
+		lineageTag: 5da7a80d-880a-51c2-9baf-e5e393cb0599
+		summarizeBy: none
+		sourceColumn: ClientID
+
+	column 'Card ID'
+		dataType: string
+		lineageTag: e2129c57-abae-532b-8b03-609f0da52945
+		summarizeBy: none
+		sourceColumn: CardID
+
+	column Amount
+		dataType: double
+		lineageTag: 54e1d36a-b097-569d-aac3-8eaab5a8d2ce
+		summarizeBy: none
+		sourceColumn: Amount
+
+	column Channel
+		dataType: string
+		lineageTag: 9047a688-e9c5-517f-9558-cc353a837a86
+		summarizeBy: none
+		sourceColumn: Channel
+
+	column 'Merchant ID'
+		dataType: string
+		lineageTag: 36ec217b-9e1a-5cfc-b9ef-e5d9647c8635
+		summarizeBy: none
+		sourceColumn: MerchantID
+
+	column 'Merchant City'
+		dataType: string
+		lineageTag: 95b76294-1ac6-5239-9038-37b73500c414
+		summarizeBy: none
+		sourceColumn: MerchantCity
+
+	column 'Merchant State'
+		dataType: string
+		lineageTag: c82b3d48-96f4-5310-a567-2d42d0229693
+		summarizeBy: none
+		sourceColumn: MerchantState
+
+	column 'Merchant Zip'
+		dataType: string
+		lineageTag: dde2a271-187d-5eac-9be4-e3b748814f1a
+		summarizeBy: none
+		sourceColumn: MerchantZip
+
+	column MCC
+		dataType: string
+		lineageTag: 2ffd9b85-3e1e-5529-ad9d-5ed340bd76d8
+		summarizeBy: none
+		sourceColumn: MCC
+
+	column Errors
+		dataType: string
+		lineageTag: 2d4f4e1b-d015-5fd7-a7ab-018e8652ff2a
+		summarizeBy: none
+		sourceColumn: Errors
+
+	column 'Fraud Label'
+		dataType: string
+		lineageTag: 3389c451-0f65-5a1a-878e-60b67b6899da
+		summarizeBy: none
+		sourceColumn: FraudLabel
+
+	column 'Merchant Category'
+		dataType: string
+		lineageTag: 88741c8e-29b1-5ada-aaf8-111c0cce3b7c
+		summarizeBy: none
+		sourceColumn: MerchantCategory
+
+	column 'Card Brand'
+		dataType: string
+		lineageTag: 80619825-6ad9-5d90-91ff-13656e286405
+		summarizeBy: none
+		sourceColumn: CardBrand
+
+	column 'Card Type'
+		dataType: string
+		lineageTag: 4e88591f-1a5d-50ff-8298-7de8f1fa2d50
+		summarizeBy: none
+		sourceColumn: CardType
+
+	column 'Card Has Chip'
+		dataType: string
+		lineageTag: 53bded53-bb31-565e-8ee7-4c84488b4b31
+		summarizeBy: none
+		sourceColumn: CardHasChip
+
+	column 'Card Credit Limit'
+		dataType: double
+		lineageTag: 72031bb9-120c-5c90-9e7f-af19a3a8278b
+		summarizeBy: none
+		sourceColumn: CardCreditLimit
+
+	column 'Card Account Opened'
+		dataType: string
+		lineageTag: 9f90878f-2c0a-530c-ba91-11d5d6137de7
+		summarizeBy: none
+		sourceColumn: CardAccountOpened
+
+	column 'Cards Issued'
+		dataType: int64
+		lineageTag: 8375706b-77d2-500f-8e14-738bb5c0b301
+		summarizeBy: none
+		sourceColumn: CardsIssued
+
+	column 'Client Age'
+		dataType: int64
+		lineageTag: fd0d2b26-8e3e-5c33-b2c8-d7092fd35717
+		summarizeBy: none
+		sourceColumn: ClientAge
+
+	column 'Client Gender'
+		dataType: string
+		lineageTag: 37a4ec9a-e6ed-5a19-a4b5-85451b2e2900
+		summarizeBy: none
+		sourceColumn: ClientGender
+
+	column 'Client Yearly Income'
+		dataType: double
+		lineageTag: 3e6f746e-f98d-5c20-8c6a-f40472f41cbb
+		summarizeBy: none
+		sourceColumn: ClientYearlyIncome
+
+	column 'Client Total Debt'
+		dataType: double
+		lineageTag: dbb40e73-fefc-5230-8be8-dd1436596157
+		summarizeBy: none
+		sourceColumn: ClientTotalDebt
+
+	column 'Client Credit Score'
+		dataType: int64
+		lineageTag: fc326129-dd15-5569-a233-0baf734bde0f
+		summarizeBy: none
+		sourceColumn: ClientCreditScore
+
+	column 'Client Cards Held'
+		dataType: int64
+		lineageTag: 153608b8-e538-528a-8a56-7d19f9be3666
+		summarizeBy: none
+		sourceColumn: ClientCardsHeld
+
+	column Year = YEAR('Transactions'[Timestamp])
+		dataType: int64
+		formatString: 0
+		lineageTag: c2b2c896-8abf-5304-b558-499e364d322b
+		summarizeBy: none
+
+	column 'Month Year' = FORMAT('Transactions'[Timestamp], "mmm yyyy")
+		dataType: string
+		lineageTag: 85079750-aa11-5f26-a678-4066ad894e1e
+		summarizeBy: none
+
+	column 'Is Approved' = IF(LEN('Transactions'[Errors]) = 0, "Yes", "No")
+		dataType: string
+		lineageTag: 6e237d74-92dc-5d21-a179-08aaef6b12f5
+		summarizeBy: none
+
+	column 'Spend Amount' = IF('Transactions'[Is Approved] = "Yes", 'Transactions'[Amount], BLANK())
+		dataType: double
+		formatString: #,0.00
+		lineageTag: ae702b25-9715-5736-b3d0-c2620e034164
+		summarizeBy: none
+
+	column 'Is Fraud' = IF('Transactions'[Fraud Label] = "Yes", "Yes", "No")
+		dataType: string
+		lineageTag: fb70230c-ef74-5142-951a-668bf113b5c9
+		summarizeBy: none
+
+	measure Transactions = COUNTROWS('Transactions')
+		formatString: #,0
+		lineageTag: 38ea1580-2f4e-513c-8cee-d978a609aa4b
+
+	measure 'Approved Transactions' = COUNTROWS(FILTER('Transactions', 'Transactions'[Is Approved] = "Yes"))
+		formatString: #,0
+		lineageTag: 590d4246-0e19-5c63-a9f9-fe4113540d9c
+
+	measure 'Declined Transactions' = COUNTROWS(FILTER('Transactions', 'Transactions'[Is Approved] = "No"))
+		formatString: #,0
+		lineageTag: 970f0493-ad8f-5613-a689-2c08b223e6a6
+
+	measure 'Decline Rate %' = DIVIDE([Declined Transactions], [Transactions])
+		formatString: 0.00%
+		lineageTag: a06d4d72-6f53-56af-8172-7a41e4ff5bff
+
+	measure Spend =
+			SUMX(
+			    FILTER('Transactions', 'Transactions'[Is Approved] = "Yes"),
+			    'Transactions'[Amount]
+			)
+		formatString: \$#,0
+		lineageTag: 912ca775-2815-5762-b5f3-46a8cccd5e59
+
+	measure 'Active Cards' = DISTINCTCOUNT('Transactions'[Card ID])
+		formatString: #,0
+		lineageTag: 59860f7a-e300-5e6f-bd82-65bcab37f2e8
+
+	measure 'Active Clients' = DISTINCTCOUNT('Transactions'[Client ID])
+		formatString: #,0
+		lineageTag: bb606be9-420c-542e-9eb7-21e0ecae73a7
+
+	measure 'Labelled Transactions' = COUNTROWS(FILTER('Transactions', LEN('Transactions'[Fraud Label]) > 0))
+		formatString: #,0
+		lineageTag: 7ba149d0-e8bc-56b4-8670-127c00aa6d60
+
+	measure 'Fraud Transactions' = COUNTROWS(FILTER('Transactions', 'Transactions'[Fraud Label] = "Yes"))
+		formatString: #,0
+		lineageTag: 0aa282f4-dc41-5262-b2eb-0ea2873eb523
+
+	measure 'Fraud Rate per 10k' = DIVIDE([Fraud Transactions], [Labelled Transactions]) * 10000
+		formatString: 0.0
+		lineageTag: 418316da-3139-5993-bc39-f09fc6e90196
+
+	measure 'Average Transaction' =
+			AVERAGEX(
+			    FILTER(
+			        'Transactions',
+			        'Transactions'[Is Approved] = "Yes" && 'Transactions'[Amount] > 0
+			    ),
+			    'Transactions'[Amount]
+			)
+		formatString: \$#,0.00
+		lineageTag: 57894caf-4ddb-5894-a2f0-b162eacdcb78
+
+	measure 'Spend PY' =
+			VAR ThisYear = SELECTEDVALUE('Transactions'[Year])
+			RETURN
+			    CALCULATE(
+			        [Spend],
+			        FILTER(ALL('Transactions'), 'Transactions'[Year] = ThisYear - 1)
+			    )
+		formatString: \$#,0
+		lineageTag: 9964dfe2-975a-5f15-bac8-900fc3446dd6
+
+	measure 'Spend YoY %' = DIVIDE([Spend] - [Spend PY], [Spend PY])
+		formatString: 0.00%
+		lineageTag: 8c9a6e64-8f6a-5c29-877d-e9822d30adb4
+
+	partition Transactions = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\\Users\\OmarWilliams\\OneDrive - MILESTONEBI\\Projects\\Claude Projects\\ClaudeCode\\Card-Transactions-Fraud\\perf\\data\\flat_transactions.csv"), [Delimiter=",", Columns=26, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"TransactionID", type text}, {"Timestamp", type datetime}, {"ClientID", type text}, {"CardID", type text}, {"Amount", type number}, {"Channel", type text}, {"MerchantID", type text}, {"MerchantCity", type text}, {"MerchantState", type text}, {"MerchantZip", type text}, {"MCC", type text}, {"Errors", type text}, {"FraudLabel", type text}, {"MerchantCategory", type text}, {"CardBrand", type text}, {"CardType", type text}, {"CardHasChip", type text}, {"CardCreditLimit", type number}, {"CardAccountOpened", type text}, {"CardsIssued", Int64.Type}, {"ClientAge", Int64.Type}, {"ClientGender", type text}, {"ClientYearlyIncome", type number}, {"ClientTotalDebt", type number}, {"ClientCreditScore", Int64.Type}, {"ClientCardsHeld", Int64.Type}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

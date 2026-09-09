@@ -1,0 +1,1 @@
+EVALUATE ROW("Cards", [Active Cards], "Clients", [Active Clients], "Avg", [Average Transaction])

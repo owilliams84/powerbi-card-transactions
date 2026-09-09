@@ -130,7 +130,7 @@ table Date
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_date.csv"), [Delimiter=",", Columns=16, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Source = Csv.Document(File.Contents("C:\\Users\\OmarWilliams\\OneDrive - MILESTONEBI\\Projects\\Claude Projects\\ClaudeCode\\Card-Transactions-Fraud\\data\\dim_date.csv"), [Delimiter=",", Columns=16, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Year", Int64.Type}, {"Quarter", type text}, {"QuarterYear", type text}, {"QuarterYearSort", Int64.Type}, {"MonthNumber", Int64.Type}, {"MonthName", type text}, {"MonthShort", type text}, {"MonthYear", type text}, {"MonthYearSort", Int64.Type}, {"MonthStart", type date}, {"DayOfWeek", Int64.Type}, {"DayName", type text}, {"IsWeekend", type text}, {"InLikeForLikePeriod", type text}, {"IsCompleteYear", type text}})
 				in

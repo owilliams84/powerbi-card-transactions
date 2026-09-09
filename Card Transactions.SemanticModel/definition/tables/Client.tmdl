@@ -141,7 +141,7 @@ table Client
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_client.csv"), [Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Source = Csv.Document(File.Contents("C:\\Users\\OmarWilliams\\OneDrive - MILESTONEBI\\Projects\\Claude Projects\\ClaudeCode\\Card-Transactions-Fraud\\data\\dim_client.csv"), [Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"ClientID", Int64.Type}, {"Gender", type text}, {"Age", Int64.Type}, {"AgeBand", type text}, {"AgeBandSort", Int64.Type}, {"RetirementAge", Int64.Type}, {"BirthYear", Int64.Type}, {"YearlyIncome", type number}, {"IncomeBand", type text}, {"IncomeBandSort", Int64.Type}, {"PerCapitaIncome", type number}, {"TotalDebt", type number}, {"DebtToIncome", type number}, {"CreditScore", Int64.Type}, {"CreditScoreBand", type text}, {"CreditScoreBandSort", Int64.Type}, {"CardsHeld", Int64.Type}})
 				in
