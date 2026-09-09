@@ -558,7 +558,7 @@ def page_overview() -> tuple[dict, list[dict]]:
             "dataPoint": series_colour({"Metrics.Approved Transactions": NAVY}),
         },
         container=chrome("Approved transactions by hour of day",
-                         "Evenly spread - the file gives every hour roughly the same share, which no real book does"),
+                         "58% of spending happens between 9am and 6pm, and 11am is the busiest hour - thirteen times midnight"),
     ))
 
     return page("pgOverview", "Overview"), v

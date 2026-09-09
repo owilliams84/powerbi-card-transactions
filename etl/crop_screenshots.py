@@ -5,7 +5,7 @@ Every page here opens with the navy brand band across the full canvas width, whi
 canvas easy to find: the first row with a long run of band-coloured pixels is the top edge, the
 run's extent is the width, and the height follows from the 1440 x 900 canvas.
 
-    python etl/crop_screenshots.py [--site <path to assets/work/superstore-sales.png>]
+    python etl/crop_screenshots.py [--site <path to assets/work/card-transactions.png>]
 
 Reads screenshots/raw_<page>.png, writes screenshots/<page>.png.
 """
@@ -20,8 +20,12 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 SHOTS = ROOT / "screenshots"
 BAND = (0x0A, 0x09, 0x17)
-PAGES = {"pgOverview": "overview", "pgProducts": "products", "pgCustomers": "customers",
-         "pgGeography": "geography"}
+PAGES = {"pgOverview": "overview", "pgChannels": "channels", "pgFraud": "fraud",
+         "pgCustomers": "customers", "pgGeography": "geography"}
+
+# The channels page carries the report's one arresting picture - the January 2015 step - so it,
+# not the overview, is what the site's work card shows.
+SITE_PAGE = "channels"
 
 
 def find_canvas(im: Image.Image) -> tuple[int, int, int, int]:
@@ -48,7 +52,7 @@ def find_canvas(im: Image.Image) -> tuple[int, int, int, int]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--site", help="also write the overview page, resized, to this path")
+    ap.add_argument("--site", help=f"also write the {SITE_PAGE} page, resized, to this path")
     args = ap.parse_args()
 
     for page, name in PAGES.items():
@@ -61,7 +65,7 @@ def main() -> None:
         out = im.crop(box)
         out.save(SHOTS / f"{name}.png", optimize=True)
         print(f"  {name}.png {out.size[0]}x{out.size[1]} (from {src.name}, box {box})")
-        if name == "overview" and args.site:
+        if name == SITE_PAGE and args.site:
             site = out.resize((2560, 1600), Image.LANCZOS)
             Path(args.site).parent.mkdir(parents=True, exist_ok=True)
             site.save(args.site, optimize=True)
