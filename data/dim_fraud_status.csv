@@ -1,0 +1,4 @@
+FraudKey,FraudStatus,IsLabelled,IsFraud,FraudSort
+0,Not labelled,No,No,2
+1,Confirmed not fraud,Yes,No,1
+2,Confirmed fraud,Yes,Yes,0

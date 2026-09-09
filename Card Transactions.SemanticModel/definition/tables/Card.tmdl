@@ -1,0 +1,116 @@
+/// One row per card held by a client in the panel - 490 cards across 160 clients,
+/// three each on average and up to nine.
+///
+/// Card number, CVV and expiry date are dropped in the ETL. They are the columns that
+/// would make this extract a PCI problem rather than a dataset, and a report that
+/// shows them is a report nobody can hand to anyone.
+///
+/// 'Card On Dark Web' is dropped too, for the opposite reason: it holds the single
+/// value 'No' for all 6,146 cards in the source, so it can only ever draw one bar.
+table Card
+	lineageTag: 7fb06064-9838-5968-b2e3-ec9033656a10
+
+	/// The card's id, with nothing else on it.
+	column Card
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 19a2c8eb-51d5-52d4-a592-c36bdc106ded
+		summarizeBy: none
+		sourceColumn: CardKey
+
+	column 'Client Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 07a86141-4233-562b-bf2f-e43530a33147
+		summarizeBy: none
+		sourceColumn: ClientID
+
+	/// Mastercard, Visa, Amex or Discover.
+	column 'Card Brand'
+		dataType: string
+		lineageTag: e6688d38-fce7-52c4-a87b-35fdf3a88bbf
+		summarizeBy: none
+		sourceColumn: CardBrand
+
+	/// Credit, Debit or Debit (Prepaid).
+	column 'Card Type'
+		dataType: string
+		lineageTag: 41537c9a-b18e-502d-899d-6151bd87d570
+		summarizeBy: none
+		sourceColumn: CardType
+
+	/// Whether the card carries an EMV chip. Every chip transaction in the file
+	/// comes from a card marked here as having one, which is the one internal
+	/// consistency check the channel data does pass.
+	column Chip
+		dataType: string
+		lineageTag: d63ead0b-6cd4-5e65-8a2f-d0cf1f7ebe78
+		summarizeBy: none
+		sourceColumn: HasChip
+
+	column 'Credit Limit'
+		dataType: double
+		formatString: \$#,0
+		lineageTag: 2ad2bce4-b6d2-5ed3-b234-5f7cf66e3750
+		summarizeBy: none
+		sourceColumn: CreditLimit
+
+	column 'Credit Limit Band'
+		dataType: string
+		lineageTag: 2ae01459-f6ab-53ee-9599-376896c4b85f
+		summarizeBy: none
+		sourceColumn: CreditLimitBand
+		sortByColumn: 'Credit Limit Band Sort'
+
+	column 'Credit Limit Band Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1ed8ba8a-8b30-5762-83df-c10eea234bbd
+		summarizeBy: none
+		sourceColumn: CreditLimitBandSort
+
+	column 'Account Opened'
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: af1ead2a-1cd9-5013-bd6d-e7f1c583c1b0
+		summarizeBy: none
+		sourceColumn: AccountOpened
+
+	column 'Account Opened Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a9d7094-0975-5480-b9f5-355a63903763
+		summarizeBy: none
+		sourceColumn: AccountOpenedYear
+
+	column 'Cards Issued'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2092b7fc-9221-52df-b69c-90820ea964ac
+		summarizeBy: none
+		sourceColumn: CardsIssued
+
+	/// The year the PIN was last changed - a card-security hygiene measure, and
+	/// the only one in the file.
+	column 'PIN Last Changed'
+		dataType: int64
+		formatString: 0
+		lineageTag: 141ec9a8-2451-5f66-a482-6773b329722c
+		summarizeBy: none
+		sourceColumn: PinLastChanged
+
+	partition Card = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_card.csv"), [Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"CardKey", Int64.Type}, {"ClientID", Int64.Type}, {"CardBrand", type text}, {"CardType", type text}, {"HasChip", type text}, {"CreditLimit", type number}, {"CreditLimitBand", type text}, {"CreditLimitBandSort", Int64.Type}, {"AccountOpened", type date}, {"AccountOpenedYear", Int64.Type}, {"CardsIssued", Int64.Type}, {"PinLastChanged", Int64.Type}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

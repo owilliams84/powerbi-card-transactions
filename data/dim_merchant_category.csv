@@ -1,0 +1,110 @@
+MCC,MerchantCategory,CategoryGroup
+1711,"Heating, Plumbing, Air Conditioning Contractors","Home, garden & industrial"
+3000,Steelworks,"Home, garden & industrial"
+3001,Steel Products Manufacturing,"Home, garden & industrial"
+3005,Miscellaneous Metal Fabrication,"Home, garden & industrial"
+3006,Miscellaneous Fabricated Metal Products,"Home, garden & industrial"
+3007,Coated and Laminated Products,"Home, garden & industrial"
+3008,Steel Drums and Barrels,"Home, garden & industrial"
+3009,Fabricated Structural Metal Products,"Home, garden & industrial"
+3058,"Tools, Parts, Supplies Manufacturing","Home, garden & industrial"
+3066,Miscellaneous Metals,"Home, garden & industrial"
+3075,"Bolt, Nut, Screw, Rivet Manufacturing","Home, garden & industrial"
+3132,Leather Goods,Speciality retail
+3144,Floor Covering Stores,"Home, garden & industrial"
+3174,Upholstery and Drapery Stores,"Home, garden & industrial"
+3256,"Brick, Stone, and Related Materials","Home, garden & industrial"
+3260,Pottery and Ceramics,"Home, garden & industrial"
+3359,Non-Ferrous Metal Foundries,"Home, garden & industrial"
+3387,"Electroplating, Plating, Polishing Services","Home, garden & industrial"
+3389,Non-Precious Metal Services,"Home, garden & industrial"
+3390,Miscellaneous Metalwork,"Home, garden & industrial"
+3393,Heat Treating Metal Services,"Home, garden & industrial"
+3395,Welding Repair,"Home, garden & industrial"
+3405,Ironwork,"Home, garden & industrial"
+3504,Gardening Supplies,"Home, garden & industrial"
+3509,Industrial Equipment and Supplies,"Home, garden & industrial"
+3596,Miscellaneous Machinery and Parts Manufacturing,"Home, garden & industrial"
+3640,"Lighting, Fixtures, Electrical Supplies","Home, garden & industrial"
+3684,Semiconductors and Related Devices,"Electronics, digital & valuables"
+3722,Passenger Railways,Travel & transport
+3730,Ship Chandlers,Travel & transport
+3771,Railroad Passenger Transport,Travel & transport
+3775,Railroad Freight,Travel & transport
+3780,Computer Network Services,"Electronics, digital & valuables"
+4111,Local and Suburban Commuter Transportation,Travel & transport
+4112,Passenger Railways,Travel & transport
+4121,Taxicabs and Limousines,Travel & transport
+4131,Bus Lines,Travel & transport
+4214,Motor Freight Carriers and Trucking,Travel & transport
+4411,Cruise Lines,Travel & transport
+4511,Airlines,Travel & transport
+4722,Travel Agencies,Travel & transport
+4784,Tolls and Bridge Fees,Travel & transport
+4814,Telecommunication Services,Utilities & telecom
+4829,Money Transfer,Money transfer & insurance
+4899,"Cable, Satellite, and Other Pay Television Services",Utilities & telecom
+4900,"Utilities - Electric, Gas, Water, Sanitary",Utilities & telecom
+5045,"Computers, Computer Peripheral Equipment","Electronics, digital & valuables"
+5094,Precious Stones and Metals,"Electronics, digital & valuables"
+5192,"Books, Periodicals, Newspapers",Speciality retail
+5193,"Florists Supplies, Nursery Stock and Flowers","Home, garden & industrial"
+5211,Lumber and Building Materials,Retail & department stores
+5251,Hardware Stores,Retail & department stores
+5261,Lawn and Garden Supply Stores,Retail & department stores
+5300,Wholesale Clubs,Retail & department stores
+5310,Discount Stores,Retail & department stores
+5311,Department Stores,Retail & department stores
+5411,"Grocery Stores, Supermarkets",Groceries & food retail
+5499,Miscellaneous Food Stores,Groceries & food retail
+5533,Automotive Parts and Accessories Stores,Fuel & motoring
+5541,Service Stations,Fuel & motoring
+5621,Women's Ready-To-Wear Stores,Retail & department stores
+5651,Family Clothing Stores,Retail & department stores
+5655,"Sports Apparel, Riding Apparel Stores",Retail & department stores
+5661,Shoe Stores,Retail & department stores
+5712,"Furniture, Home Furnishings, and Equipment Stores","Home, garden & industrial"
+5719,Miscellaneous Home Furnishing Stores,"Home, garden & industrial"
+5722,Household Appliance Stores,"Electronics, digital & valuables"
+5732,Electronics Stores,"Electronics, digital & valuables"
+5733,Music Stores - Musical Instruments,Speciality retail
+5812,Eating Places and Restaurants,Restaurants & bars
+5813,Drinking Places (Alcoholic Beverages),Restaurants & bars
+5814,Fast Food Restaurants,Restaurants & bars
+5815,"Digital Goods - Media, Books, Apps","Electronics, digital & valuables"
+5816,Digital Goods - Games,"Electronics, digital & valuables"
+5912,Drug Stores and Pharmacies,Speciality retail
+5921,"Package Stores, Beer, Wine, Liquor",Speciality retail
+5932,Antique Shops,"Electronics, digital & valuables"
+5941,Sporting Goods Stores,Speciality retail
+5942,Book Stores,Speciality retail
+5947,"Gift, Card, Novelty Stores",Speciality retail
+5970,"Artist Supply Stores, Craft Shops",Speciality retail
+5977,Cosmetic Stores,Speciality retail
+6300,"Insurance Sales, Underwriting",Money transfer & insurance
+7011,"Lodging - Hotels, Motels, Resorts","Leisure, lodging & services"
+7210,Laundry Services,"Leisure, lodging & services"
+7230,Beauty and Barber Shops,"Leisure, lodging & services"
+7276,Tax Preparation Services,Health & professional
+7349,Cleaning and Maintenance Services,"Leisure, lodging & services"
+7393,"Detective Agencies, Security Services","Leisure, lodging & services"
+7531,Automotive Body Repair Shops,Fuel & motoring
+7538,Automotive Service Shops,Fuel & motoring
+7542,Car Washes,Fuel & motoring
+7549,Towing Services,Fuel & motoring
+7801,"Athletic Fields, Commercial Sports","Leisure, lodging & services"
+7802,"Recreational Sports, Clubs","Leisure, lodging & services"
+7832,Motion Picture Theaters,"Leisure, lodging & services"
+7922,Theatrical Producers,"Leisure, lodging & services"
+7995,"Betting (including Lottery Tickets, Casinos)","Leisure, lodging & services"
+7996,"Amusement Parks, Carnivals, Circuses","Leisure, lodging & services"
+8011,"Doctors, Physicians",Health & professional
+8021,Dentists and Orthodontists,Health & professional
+8041,Chiropractors,Health & professional
+8043,"Optometrists, Optical Goods and Eyeglasses",Health & professional
+8049,Podiatrists,Health & professional
+8062,Hospitals,Health & professional
+8099,Medical Services,Health & professional
+8111,Legal Services and Attorneys,Health & professional
+8931,"Accounting, Auditing, and Bookkeeping Services",Health & professional
+9402,Postal Services - Government Only,Postal & government

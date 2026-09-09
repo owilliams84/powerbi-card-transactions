@@ -1,0 +1,58 @@
+/// Where the merchant was. The source keeps this in one column that mixes two-letter
+/// US state codes with full country names - 199 distinct values, 147 of them country
+/// names - so 'Georgia' the country (34 rows) sits next to 'GA' the state (368,206).
+/// A map fed the raw column plots one onto the other.
+///
+/// A blank is not one thing either. Almost every blank is an online transaction with
+/// no merchant location to record, but 497 card-present travel-agency rows are blank
+/// too; those are 'Not recorded' rather than being relabelled Online, which would
+/// have quietly moved card-present spend into the online channel.
+table Geography
+	lineageTag: 2282f458-c3b7-5ee6-a36b-7c3e6562cf7a
+
+	column 'Geo Key'
+		dataType: int64
+		isHidden
+		isKey
+		formatString: 0
+		lineageTag: 03c4c73a-e2a3-5842-b1f0-2dc6b30435d4
+		summarizeBy: none
+		sourceColumn: GeoKey
+
+	column Location
+		dataType: string
+		lineageTag: b60eb887-48d8-5cc2-b524-19b1a0bf9273
+		summarizeBy: none
+		sourceColumn: Location
+
+	/// US state, International, Online or Not recorded.
+	column 'Location Type'
+		dataType: string
+		lineageTag: 3119f7e9-ff30-5b5a-aaa6-b0d611954592
+		summarizeBy: none
+		sourceColumn: LocationType
+
+	column 'State Code'
+		dataType: string
+		isHidden
+		lineageTag: 6fe3ec2d-afcf-5abd-87b8-8f34db81867a
+		summarizeBy: none
+		sourceColumn: StateCode
+
+	column Country
+		dataType: string
+		lineageTag: 7be75b4b-09a0-5776-928c-8d8b6c1b0e78
+		summarizeBy: none
+		sourceColumn: Country
+
+	partition Geography = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_geography.csv"), [Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"GeoKey", Int64.Type}, {"Location", type text}, {"LocationType", type text}, {"StateCode", type text}, {"Country", type text}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

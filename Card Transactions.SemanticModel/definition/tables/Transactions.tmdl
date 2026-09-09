@@ -1,0 +1,191 @@
+/// One row per transaction attempt - 1,017,087 of them across ten years, for the 160
+/// sampled clients. Loaded as ten partitions, one per year.
+///
+/// Amount is signed and is the amount attempted. Negative rows are refunds and
+/// reversals - 4.9% of the file, and heavily concentrated in fuel and grocery, which
+/// is what a pre-authorisation reversal looks like. 269 rows are exactly zero and
+/// every one of them is a money transfer (MCC 4829).
+table Transactions
+	lineageTag: 9aa19dff-dc3a-5210-9edf-43694f2d620c
+
+	column Date
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: c2ab7cf4-ab16-58b0-be89-f82f22ce30ae
+		summarizeBy: none
+		sourceColumn: Date
+
+	/// Hour of the day, 0 to 23, from the transaction timestamp.
+	column Hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 8bc3fa2c-327e-5862-a66e-f390f82407be
+		summarizeBy: none
+		sourceColumn: Hour
+
+	column 'Client Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d0da1cbb-4e35-5055-8fd3-efd50e1ea512
+		summarizeBy: none
+		sourceColumn: ClientKey
+
+	column 'Card Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e00bd67e-53c3-56cb-a811-d6b5a2e2fbd9
+		summarizeBy: none
+		sourceColumn: CardKey
+
+	column MCC
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c25a5621-d101-59d0-a351-21ee3daa4397
+		summarizeBy: none
+		sourceColumn: MCC
+
+	column 'Channel Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e93c1600-b82b-5799-9a50-fa1b0f9b8b0f
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+	column 'Outcome Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f3e93542-aba6-5c7d-b5d5-7d2605c3fa6f
+		summarizeBy: none
+		sourceColumn: OutcomeKey
+
+	column 'Geo Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2eac148f-9001-58ec-9ca4-8f7a8e4ab45f
+		summarizeBy: none
+		sourceColumn: GeoKey
+
+	column 'Fraud Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f260b96f-af68-536f-9162-95fcf099f13b
+		summarizeBy: none
+		sourceColumn: FraudKey
+
+	column Amount
+		dataType: double
+		isHidden
+		formatString: #,0.00
+		lineageTag: 546b3b8a-6687-5252-a4c6-4ddad89f2af4
+		summarizeBy: none
+		sourceColumn: Amount
+
+	partition 'Transactions 2010' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2010.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2011' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2011.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2012' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2012.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2013' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2013.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2014' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2014.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2015' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2015.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2016' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2016.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2017' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2017.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2018' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2018.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	partition 'Transactions 2019' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/fact_transaction_2019.csv"), [Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Hour", Int64.Type}, {"ClientKey", Int64.Type}, {"CardKey", Int64.Type}, {"MCC", Int64.Type}, {"ChannelKey", Int64.Type}, {"OutcomeKey", Int64.Type}, {"GeoKey", Int64.Type}, {"FraudKey", Int64.Type}, {"Amount", type number}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

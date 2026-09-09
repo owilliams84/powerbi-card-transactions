@@ -1,0 +1,139 @@
+/// One row per day from 1 January 2010 to 31 October 2019, contiguous, and marked as
+/// the date table so DATEADD and TOTALYTD have a calendar to walk.
+///
+/// 'In Like For Like Period' is the column that keeps 2019 honest. The file stops on
+/// 31 October, so 2019 holds ten months. A year-on-year chart that ignores that shows
+/// a 17% collapse in 2019 which is entirely the calendar; the like-for-like measures
+/// filter on this column and compare January to October against January to October.
+table Date
+	lineageTag: c640a452-5a21-5bfd-8707-28a5c079d74a
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: d mmm yyyy
+		lineageTag: ebc99104-8890-5314-a965-9512580e8279
+		summarizeBy: none
+		sourceColumn: Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 26c52ba2-5602-562b-acfb-2cbb046f7620
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: string
+		lineageTag: 87a37d8e-dcee-54e4-89ae-2978dee14069
+		summarizeBy: none
+		sourceColumn: Quarter
+
+	column 'Quarter Year'
+		dataType: string
+		lineageTag: 1f44472b-a003-50ce-9317-21dc07417048
+		summarizeBy: none
+		sourceColumn: QuarterYear
+		sortByColumn: 'Quarter Year Sort'
+
+	column 'Quarter Year Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 87cd21eb-7156-5ac1-8774-6bbcaafe9dc9
+		summarizeBy: none
+		sourceColumn: QuarterYearSort
+
+	column 'Month No'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 69a2ad5f-a613-5f81-ba1a-04500c047668
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+	column Month
+		dataType: string
+		lineageTag: 7a4c11f5-5eef-5fab-b239-71aaf144b486
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: 'Month No'
+
+	column 'Month Short'
+		dataType: string
+		lineageTag: dc9e8139-848a-5cac-93fc-ad4b5a8a58fb
+		summarizeBy: none
+		sourceColumn: MonthShort
+		sortByColumn: 'Month No'
+
+	column 'Month Year'
+		dataType: string
+		lineageTag: 161c1308-623a-5ddd-966f-02c7798e6ac3
+		summarizeBy: none
+		sourceColumn: MonthYear
+		sortByColumn: 'Month Year Sort'
+
+	column 'Month Year Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f65d62ed-e4bb-5f6f-8046-c2e299853444
+		summarizeBy: none
+		sourceColumn: MonthYearSort
+
+	/// First day of the month. Visible because the ten-year trend charts put it
+	/// on a continuous axis - 118 month-year strings would not fit.
+	column 'Month Start'
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: f77f75b8-41c4-5769-8316-99e647a4f269
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+	column 'Day of Week'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 969e6e54-e2a2-538b-89ab-042ad0423e2d
+		summarizeBy: none
+		sourceColumn: DayOfWeek
+
+	column Day
+		dataType: string
+		lineageTag: b804c682-161e-57f6-af5e-258abc2b453b
+		summarizeBy: none
+		sourceColumn: DayName
+		sortByColumn: 'Day of Week'
+
+	column 'Is Weekend'
+		dataType: string
+		lineageTag: b98008a6-d165-5fd0-9b9d-5bf599b955b6
+		summarizeBy: none
+		sourceColumn: IsWeekend
+
+	/// Yes for January to October, the months every year in the file has.
+	column 'In Like For Like Period'
+		dataType: string
+		lineageTag: ae36dbaf-079e-5065-acf3-3a9c7bd08370
+		summarizeBy: none
+		sourceColumn: InLikeForLikePeriod
+
+	/// No for 2019, which stops on 31 October.
+	column 'Is Complete Year'
+		dataType: string
+		lineageTag: 99cce892-2c09-5aa6-91ae-ee09d3bbb5df
+		summarizeBy: none
+		sourceColumn: IsCompleteYear
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_date.csv"), [Delimiter=",", Columns=16, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"Year", Int64.Type}, {"Quarter", type text}, {"QuarterYear", type text}, {"QuarterYearSort", Int64.Type}, {"MonthNumber", Int64.Type}, {"MonthName", type text}, {"MonthShort", type text}, {"MonthYear", type text}, {"MonthYearSort", Int64.Type}, {"MonthStart", type date}, {"DayOfWeek", Int64.Type}, {"DayName", type text}, {"IsWeekend", type text}, {"InLikeForLikePeriod", type text}, {"IsCompleteYear", type text}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

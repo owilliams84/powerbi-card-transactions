@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Card Transactions"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c0077d10-1a48-5f93-8ded-4d2f51fafa4d"
+  }
+}

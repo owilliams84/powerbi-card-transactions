@@ -1,0 +1,150 @@
+/// One row per cardholder in the sampled panel: 160 of the file's 2,000 clients.
+///
+/// Street address, latitude and longitude are dropped in the ETL rather than hidden
+/// here. A column that never leaves the extract cannot leak out of a report, and none
+/// of the three answers a question this report asks.
+///
+/// Age, income and credit score are as at the file's build date, not as at the
+/// transaction - so they band a client for the whole ten years, and a 2010 figure
+/// sliced by 'Under 30' means 'people who are under 30 now', not 'were then'.
+table Client
+	lineageTag: 5de3f347-664c-5610-85c2-83b6840597f5
+
+	/// The client's id. There are no names in this file, which is the point.
+	column Client
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 35e41d16-a721-50de-8a79-cfe552267ea8
+		summarizeBy: none
+		sourceColumn: ClientID
+
+	column Gender
+		dataType: string
+		lineageTag: 3a32ff57-7525-5426-b7ae-992f2334c450
+		summarizeBy: none
+		sourceColumn: Gender
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 7fde1b76-332b-546e-95bc-5b44da931426
+		summarizeBy: none
+		sourceColumn: Age
+
+	column 'Age Band'
+		dataType: string
+		lineageTag: c7eeaf25-8b1b-55fb-b919-96c6c947869b
+		summarizeBy: none
+		sourceColumn: AgeBand
+		sortByColumn: 'Age Band Sort'
+
+	column 'Age Band Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 02f22872-9cb1-5c73-b673-c06e27716cbe
+		summarizeBy: none
+		sourceColumn: AgeBandSort
+
+	column 'Birth Year'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 95d2b988-017e-5cc0-a4dc-451fbb563a31
+		summarizeBy: none
+		sourceColumn: BirthYear
+
+	column 'Retirement Age'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d6e20756-4830-50e9-8d9a-534cd747ab9e
+		summarizeBy: none
+		sourceColumn: RetirementAge
+
+	column 'Yearly Income'
+		dataType: double
+		formatString: \$#,0
+		lineageTag: 79e2e87d-a480-593e-aa07-31bf2dddb8ba
+		summarizeBy: none
+		sourceColumn: YearlyIncome
+
+	column 'Income Band'
+		dataType: string
+		lineageTag: c6745e7a-9e6a-53cb-89d2-a26584fd38c7
+		summarizeBy: none
+		sourceColumn: IncomeBand
+		sortByColumn: 'Income Band Sort'
+
+	column 'Income Band Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5d6f5a87-182a-5cd3-84e7-54afd4155f8e
+		summarizeBy: none
+		sourceColumn: IncomeBandSort
+
+	column 'Per Capita Income'
+		dataType: double
+		isHidden
+		formatString: \$#,0
+		lineageTag: 19689a5b-9f60-5acd-9ee7-ef44317dcc7e
+		summarizeBy: none
+		sourceColumn: PerCapitaIncome
+
+	column 'Total Debt'
+		dataType: double
+		formatString: \$#,0
+		lineageTag: a33bc7b5-3e07-50cf-a818-b0d6efbe5ce5
+		summarizeBy: none
+		sourceColumn: TotalDebt
+
+	column 'Debt to Income'
+		dataType: double
+		formatString: 0.00
+		lineageTag: e3245fda-cfb8-5638-b669-9ab673ea720e
+		summarizeBy: none
+		sourceColumn: DebtToIncome
+
+	/// FICO, 480 to 850 in this file.
+	column 'Credit Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: db079548-63c7-5895-a461-c061d95533c5
+		summarizeBy: none
+		sourceColumn: CreditScore
+
+	column 'Credit Score Band'
+		dataType: string
+		lineageTag: 3c14cc7d-c5fd-5793-85df-8001a43e1502
+		summarizeBy: none
+		sourceColumn: CreditScoreBand
+		sortByColumn: 'Credit Score Band Sort'
+
+	column 'Credit Score Band Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 738fc9ea-c9f6-55a1-bae0-558f00068f1f
+		summarizeBy: none
+		sourceColumn: CreditScoreBandSort
+
+	column 'Cards Held'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e7fe5aa-5b6b-53f7-967a-7ec45f88de48
+		summarizeBy: none
+		sourceColumn: CardsHeld
+
+	partition Client = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_client.csv"), [Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"ClientID", Int64.Type}, {"Gender", type text}, {"Age", Int64.Type}, {"AgeBand", type text}, {"AgeBandSort", Int64.Type}, {"RetirementAge", Int64.Type}, {"BirthYear", Int64.Type}, {"YearlyIncome", type number}, {"IncomeBand", type text}, {"IncomeBandSort", Int64.Type}, {"PerCapitaIncome", type number}, {"TotalDebt", type number}, {"DebtToIncome", type number}, {"CreditScore", Int64.Type}, {"CreditScoreBand", type text}, {"CreditScoreBandSort", Int64.Type}, {"CardsHeld", Int64.Type}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

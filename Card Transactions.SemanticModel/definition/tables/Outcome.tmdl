@@ -1,0 +1,59 @@
+/// Whether the transaction was authorised, and if not, why not. The source carries
+/// this as a free-text 'errors' column which is null on an approval and can hold two
+/// reasons at once ('Bad PIN,Insufficient Balance'); the 745 double-reason rows in
+/// the source become 'Multiple errors' rather than being split and double counted.
+///
+/// 'Is Approved' is what the Spend measure filters on, and it matters: the Amount
+/// column is the amount that was *attempted*, and it is populated on declined rows
+/// too. Summing it whole overstates spend by $929,084 over the ten years.
+table Outcome
+	lineageTag: 794fba01-a7b8-55f4-b7a8-0a36064a29d4
+
+	column 'Outcome Key'
+		dataType: int64
+		isHidden
+		isKey
+		formatString: 0
+		lineageTag: 4585de82-88a7-5c4e-a9c7-496377e9834f
+		summarizeBy: none
+		sourceColumn: OutcomeKey
+
+	column Outcome
+		dataType: string
+		lineageTag: 75d98bd5-996f-527a-a292-a137dd6df53d
+		summarizeBy: none
+		sourceColumn: Outcome
+		sortByColumn: 'Outcome Sort'
+
+	column 'Outcome Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9fd06924-aa0c-5997-923c-7da0567e6842
+		summarizeBy: none
+		sourceColumn: OutcomeSort
+
+	/// Who or what caused it: funds, cardholder, card data, technical.
+	column 'Outcome Class'
+		dataType: string
+		lineageTag: aabe931b-ce53-548e-9832-102624de668c
+		summarizeBy: none
+		sourceColumn: OutcomeClass
+
+	column 'Is Approved'
+		dataType: string
+		lineageTag: f681b36a-5c15-52e9-a68f-685b2b5e2824
+		summarizeBy: none
+		sourceColumn: IsApproved
+
+	partition Outcome = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_outcome.csv"), [Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"OutcomeKey", Int64.Type}, {"Outcome", type text}, {"OutcomeSort", Int64.Type}, {"OutcomeClass", type text}, {"IsApproved", type text}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

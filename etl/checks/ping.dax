@@ -1,0 +1,1 @@
+EVALUATE ROW("Tables", COUNTROWS(INFO.TABLES()), "Measures", COUNTROWS(INFO.MEASURES()), "FactRows", COUNTROWS('Transactions'))

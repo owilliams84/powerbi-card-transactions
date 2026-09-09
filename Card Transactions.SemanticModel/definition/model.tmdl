@@ -1,0 +1,22 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+
+annotation PBI_QueryOrder = ["Date", "Client", "Card", "Merchant Category", "Channel", "Outcome", "Geography", "Fraud Status", "Transactions"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Date
+ref table Client
+ref table Card
+ref table 'Merchant Category'
+ref table Channel
+ref table Outcome
+ref table Geography
+ref table 'Fraud Status'
+ref table Transactions
+ref table Metrics

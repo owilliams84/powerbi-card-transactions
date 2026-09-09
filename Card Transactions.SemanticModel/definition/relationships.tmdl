@@ -1,0 +1,31 @@
+relationship 'Date to Transactions'
+	fromColumn: Transactions.Date
+	toColumn: Date.Date
+
+relationship 'Client to Transactions'
+	fromColumn: Transactions.'Client Key'
+	toColumn: Client.Client
+
+relationship 'Card to Transactions'
+	fromColumn: Transactions.'Card Key'
+	toColumn: Card.Card
+
+relationship 'Category to Transactions'
+	fromColumn: Transactions.MCC
+	toColumn: 'Merchant Category'.MCC
+
+relationship 'Channel to Transactions'
+	fromColumn: Transactions.'Channel Key'
+	toColumn: Channel.'Channel Key'
+
+relationship 'Outcome to Transactions'
+	fromColumn: Transactions.'Outcome Key'
+	toColumn: Outcome.'Outcome Key'
+
+relationship 'Geography to Transactions'
+	fromColumn: Transactions.'Geo Key'
+	toColumn: Geography.'Geo Key'
+
+relationship 'Fraud to Transactions'
+	fromColumn: Transactions.'Fraud Key'
+	toColumn: 'Fraud Status'.'Fraud Key'

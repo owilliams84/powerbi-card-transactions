@@ -1,0 +1,4 @@
+ChannelKey,Channel,ChannelSort,ChannelType
+1,Swipe,1,Card present
+2,Chip,2,Card present
+3,Online,3,Card not present

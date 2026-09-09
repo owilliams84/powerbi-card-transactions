@@ -1,0 +1,304 @@
+/// Measure-only table. Nothing here stores data; the hidden column exists because
+/// a table needs one. Every number on the report comes from here.
+table Metrics
+	lineageTag: 6f7295ac-c67e-59a5-a0bf-7afd99f83d19
+
+	/// Every attempt, approved or not. The denominator for a decline rate, never for spend.
+	measure Transactions = COUNTROWS('Transactions')
+		formatString: #,0
+		lineageTag: ca6e86b6-7f25-551a-8578-7dac13bc2f98
+
+	measure 'Approved Transactions' = CALCULATE([Transactions], KEEPFILTERS('Outcome'[Is Approved] = "Yes"))
+		formatString: #,0
+		lineageTag: 7b5cdafc-a8b0-51f8-8f2c-212355ca3a79
+
+	measure 'Declined Transactions' = CALCULATE([Transactions], KEEPFILTERS('Outcome'[Is Approved] = "No"))
+		formatString: #,0
+		lineageTag: 4bafa0be-c049-5861-8a28-5a9137c6b1a5
+
+	/// Declines as a share of attempts. 1.50% over the ten years.
+	measure 'Decline Rate %' = DIVIDE([Declined Transactions], [Transactions])
+		formatString: 0.00%
+		lineageTag: 853ca00d-3b9c-54da-bf84-dad574970feb
+
+	/// Settled value: approved rows only, refunds netted off. This is the money figure.
+	measure Spend = CALCULATE(SUM('Transactions'[Amount]), KEEPFILTERS('Outcome'[Is Approved] = "Yes"))
+		formatString: \$#,0
+		lineageTag: da6f2ffa-ab8e-5d75-afcd-2360c0f467c4
+
+	/// Every row including the declined ones - what a naive SUM of Amount returns. It is
+	/// $929,084 above Spend over the period, and the gap is not an error in the data, it is
+	/// the money the bank declined to move.
+	measure 'Attempted Value' = SUM('Transactions'[Amount])
+		formatString: \$#,0
+		lineageTag: 76dad178-d7f5-5bc3-b927-f0536df1d929
+
+	measure 'Purchase Value' = CALCULATE(SUM('Transactions'[Amount]), KEEPFILTERS('Outcome'[Is Approved] = "Yes"), 'Transactions'[Amount] > 0)
+		formatString: \$#,0
+		lineageTag: 2d6ce45b-4987-5b23-abd4-e8692034555d
+
+	measure Refunds = CALCULATE([Transactions], KEEPFILTERS('Outcome'[Is Approved] = "Yes"), 'Transactions'[Amount] < 0)
+		formatString: #,0
+		lineageTag: e1172ee8-f84b-5142-b542-710c135753d5
+
+	measure 'Refund Value' = CALCULATE(SUM('Transactions'[Amount]), KEEPFILTERS('Outcome'[Is Approved] = "Yes"), 'Transactions'[Amount] < 0)
+		formatString: \$#,0
+		lineageTag: 3db50a47-e614-5201-a9ad-95360376b28b
+
+	/// 4.9% of approved transactions are negative. Fuel and grocery account for most of them,
+	/// which is the shape of a pre-authorisation being released rather than a returned jumper.
+	measure 'Refund Rate %' = DIVIDE([Refunds], [Approved Transactions])
+		formatString: 0.0%
+		lineageTag: 6caec015-610d-5369-891a-807a31d7eed6
+
+	/// Purchases only. Averaging the refunds in drags it below anything a cardholder would
+	/// recognise as their typical spend.
+	measure 'Average Transaction' =
+			DIVIDE(
+			    [Purchase Value],
+			    CALCULATE([Transactions], KEEPFILTERS('Outcome'[Is Approved] = "Yes"), 'Transactions'[Amount] > 0)
+			)
+		formatString: \$#,0.00
+		lineageTag: 90fc45a3-6f72-5f3b-8ec2-9c234d4cc5bc
+
+	/// Cards with at least one attempt in the period.
+	measure 'Active Cards' = DISTINCTCOUNT('Transactions'[Card Key])
+		formatString: #,0
+		lineageTag: 99c25ce0-7ed4-5e3a-a939-ba64674f6653
+
+	measure 'Active Clients' = DISTINCTCOUNT('Transactions'[Client Key])
+		formatString: #,0
+		lineageTag: bbfbc4b3-d1f0-53d2-bfc8-47c72f99a830
+
+	measure 'Transactions per Card' = DIVIDE([Approved Transactions], [Active Cards])
+		formatString: 0.0
+		lineageTag: 0d59932a-42db-5cb9-854a-37c1333386c5
+
+	measure 'Spend per Card' = DIVIDE([Spend], [Active Cards])
+		formatString: \$#,0
+		lineageTag: 352a0304-3c1d-5b34-8138-ab4d726ad790
+
+	measure 'Spend per Client' = DIVIDE([Spend], [Active Clients])
+		formatString: \$#,0
+		lineageTag: 96a8e24f-dfbc-537b-8ba3-2d8c28846b52
+
+	/// Summed over the Card table, so a date filter does not move it - a limit is a standing
+	/// figure, not something that happened in March.
+	measure 'Total Credit Limit' = SUM('Card'[Credit Limit])
+		formatString: \$#,0
+		lineageTag: 01c68310-4564-5d5a-8642-2259371794a5
+
+	/// Spend in the period against the cards' combined limit. Not utilisation in the credit
+	/// sense - there are no balances in this file - but it is the ratio that shows which
+	/// segments turn their limit over and which sit on it.
+	measure 'Spend to Limit' = DIVIDE([Spend], [Total Credit Limit])
+		formatString: 0.0%
+		lineageTag: 80cfa383-520a-5ed6-b570-7beb73d4d8d1
+
+	/// Rows the source actually adjudicated. Two thirds of the file.
+	measure 'Labelled Transactions' = CALCULATE([Transactions], KEEPFILTERS('Fraud Status'[Is Labelled] = "Yes"))
+		formatString: #,0
+		lineageTag: 95a42338-cbe1-5dd2-b55e-42658c5ce749
+
+	/// 67.0%, and flat in every year - so the unlabelled rows are a sampling decision by
+	/// whoever built the file, not a gap that grows or a period that was never reviewed.
+	measure 'Label Coverage %' = DIVIDE([Labelled Transactions], [Transactions])
+		formatString: 0.0%
+		lineageTag: 87af5ef4-7060-5a4d-a305-912775a60235
+
+	measure 'Fraud Transactions' = CALCULATE([Transactions], KEEPFILTERS('Fraud Status'[Is Fraud] = "Yes"))
+		formatString: #,0
+		lineageTag: 9d2362a0-5c6c-588b-a470-349d2d20acdf
+
+	/// Confirmed fraud per ten thousand *adjudicated* transactions. The correct denominator:
+	/// an unlabelled row is not a clean row.
+	measure 'Fraud Rate per 10k' = DIVIDE([Fraud Transactions], [Labelled Transactions]) * 10000
+		formatString: 0.0
+		lineageTag: 2a494488-130b-50a1-94bb-d2fdfefe52cf
+
+	/// The same number over every row, which is what you get by joining the labels and
+	/// treating the misses as clean. It reads a third lower. Kept in the model so the report
+	/// can show the two side by side instead of asserting that one of them is wrong.
+	measure 'Fraud Rate per 10k (all rows)' = DIVIDE([Fraud Transactions], [Transactions]) * 10000
+		formatString: 0.0
+		lineageTag: 5d15630e-d239-54b8-bf7e-8acaf552dc72
+
+	measure 'Fraud Value' = CALCULATE(SUM('Transactions'[Amount]), KEEPFILTERS('Fraud Status'[Is Fraud] = "Yes"))
+		formatString: \$#,0
+		lineageTag: 0cdb8639-230d-5b7a-a522-69bf842e64b9
+
+	/// Fraudulent value as a share of adjudicated value - the loss rate, on the same
+	/// denominator as the count-based one.
+	measure 'Fraud Value Share' =
+			DIVIDE(
+			    [Fraud Value],
+			    CALCULATE(
+			        SUM('Transactions'[Amount]),
+			        KEEPFILTERS('Fraud Status'[Is Labelled] = "Yes")
+			    )
+			)
+		formatString: 0.00%
+		lineageTag: b14ab227-ec4b-5b29-a0c7-51f689e80c1a
+
+	measure 'Cards Hit by Fraud' = CALCULATE([Active Cards], KEEPFILTERS('Fraud Status'[Is Fraud] = "Yes"))
+		formatString: #,0
+		lineageTag: c0eae93b-fd46-50b8-b42b-1bb221e68d30
+
+	measure 'Average Fraud Transaction' =
+			DIVIDE(
+			    [Fraud Value],
+			    [Fraud Transactions]
+			)
+		formatString: \$#,0.00
+		lineageTag: d140a00b-8a9f-5cdf-a3e8-a9125e9a89c9
+
+	/// This channel's share of attempts in the same period - the measure behind the stacked
+	/// channel chart.
+	measure 'Channel Share %' = DIVIDE([Transactions], CALCULATE([Transactions], REMOVEFILTERS('Channel')))
+		formatString: 0.0%
+		lineageTag: aab8aa9e-3f0f-5d5d-9d35-ca9273bf6b81
+
+	measure 'Chip Share %' =
+			DIVIDE(
+			    CALCULATE([Transactions], KEEPFILTERS('Channel'[Channel] = "Chip")),
+			    [Transactions]
+			)
+		formatString: 0.0%
+		lineageTag: c910379c-6bba-5163-8e2d-0e370278c39f
+
+	measure 'Online Share %' =
+			DIVIDE(
+			    CALCULATE([Transactions], KEEPFILTERS('Channel'[Channel] = "Online")),
+			    [Transactions]
+			)
+		formatString: 0.0%
+		lineageTag: b87801c0-bb10-554f-bd9d-003bc42c6dc3
+
+	measure 'Card Not Present Share %' =
+			DIVIDE(
+			    CALCULATE([Transactions], KEEPFILTERS('Channel'[Presentment] = "Card not present")),
+			    [Transactions]
+			)
+		formatString: 0.0%
+		lineageTag: 80d5e5ff-6e7e-5543-86a0-d7d01345b397
+
+	/// This reason's share of all declines in the period.
+	measure 'Decline Share of Class' = DIVIDE([Declined Transactions], CALCULATE([Declined Transactions], REMOVEFILTERS('Outcome')))
+		formatString: 0.0%
+		lineageTag: 1f34f432-b9e2-5983-88ff-f731ebd9f708
+
+	/// The share of attempts lost to the bank's own plumbing rather than to the cardholder -
+	/// the only line in the decline mix that is entirely the issuer's to fix.
+	measure 'Technical Decline Rate %' =
+			DIVIDE(
+			    CALCULATE([Transactions], KEEPFILTERS('Outcome'[Outcome Class] = "Declined - technical")),
+			    [Transactions]
+			)
+		formatString: 0.00%
+		lineageTag: 7ce51faa-4c26-5110-acaf-dc139e74c2b8
+
+	measure 'Declined Value' =
+			CALCULATE(
+			    SUM('Transactions'[Amount]),
+			    KEEPFILTERS('Outcome'[Is Approved] = "No")
+			)
+		formatString: \$#,0
+		lineageTag: 5dba1178-a266-5c26-bdcd-1b4816901736
+
+	/// Needs the marked date table; without it DATEADD returns blank everywhere.
+	measure 'Spend PY' = CALCULATE([Spend], DATEADD('Date'[Date], -1, YEAR))
+		formatString: \$#,0
+		lineageTag: 4d805846-4dfe-50ba-aa83-25eb34233e9a
+
+	/// Straight year on year, and wrong for 2019 - the file stops in October, so this reads
+	/// -17% for a year that is simply two months short. Use the like-for-like pair below.
+	measure 'Spend YoY %' = DIVIDE([Spend] - [Spend PY], [Spend PY])
+		formatString: 0.0%
+		lineageTag: 408078c2-7872-5270-9dad-5e752c818196
+
+	/// January to October only, in every year - the window all ten years share.
+	measure 'Spend LFL' = CALCULATE([Spend], KEEPFILTERS('Date'[In Like For Like Period] = "Yes"))
+		formatString: \$#,0
+		lineageTag: 51d982f8-fa87-55ef-b536-5a7433a6dda3
+
+	measure 'Spend LFL PY' = CALCULATE([Spend LFL], DATEADD('Date'[Date], -1, YEAR))
+		formatString: \$#,0
+		lineageTag: 0d78ff69-bf0d-57d6-92ea-974670ab90c0
+
+	/// The honest year-on-year: ten months against the same ten months.
+	measure 'Spend LFL YoY %' = DIVIDE([Spend LFL] - [Spend LFL PY], [Spend LFL PY])
+		formatString: 0.0%
+		lineageTag: 2eb0dcf6-9c79-5415-adf0-829bd7c9ac68
+
+	measure 'Transactions LFL' = CALCULATE([Approved Transactions], KEEPFILTERS('Date'[In Like For Like Period] = "Yes"))
+		formatString: #,0
+		lineageTag: b35ecc9a-8a68-562f-849e-ef00bce7022f
+
+	measure 'Transactions LFL PY' = CALCULATE([Transactions LFL], DATEADD('Date'[Date], -1, YEAR))
+		formatString: #,0
+		lineageTag: f69369b5-e708-59bd-8120-5783b88d61ca
+
+	measure 'Transactions LFL YoY %' = DIVIDE([Transactions LFL] - [Transactions LFL PY], [Transactions LFL PY])
+		formatString: 0.0%
+		lineageTag: cb0e3610-88d8-5000-bea7-066d719ba5da
+
+	measure 'Spend 12M' = CALCULATE([Spend], DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -12, MONTH))
+		formatString: \$#,0
+		lineageTag: 186cbd4b-a96d-506b-a1d8-9a4f241c762a
+
+	/// This row's share of all spend in the same period, with every non-date filter cleared -
+	/// so a category's share is of the whole book, not of whatever else is on the page.
+	measure 'Spend Share' =
+			DIVIDE(
+			    [Spend],
+			    CALCULATE(
+			        [Spend],
+			        REMOVEFILTERS('Merchant Category'), REMOVEFILTERS('Geography'),
+			        REMOVEFILTERS('Card'), REMOVEFILTERS('Client'), REMOVEFILTERS('Channel')
+			    )
+			)
+		formatString: 0.0%
+		lineageTag: 273d4e92-1542-55ae-bf41-00178eb9b01b
+
+	measure 'Category Rank' = RANKX(ALLSELECTED('Merchant Category'[Merchant Category]), [Spend], , DESC, Dense)
+		formatString: 0
+		lineageTag: b44fc6d9-8326-54ba-be65-37fd08cf65b1
+
+	measure 'Location Rank' = RANKX(ALLSELECTED('Geography'[Location]), [Spend], , DESC, Dense)
+		formatString: 0
+		lineageTag: 092c6680-83ad-5aeb-9076-8ab08c3b7813
+
+	/// A label for the period on screen: '2016', or 'Jan 2010 to Oct 2019'.
+	measure 'Report Period' =
+			VAR First = MIN('Date'[Date])
+			VAR Last = MAX('Date'[Date])
+			VAR WholeYears = MONTH(First) = 1 && DAY(First) = 1 && MONTH(Last) = 12 && DAY(Last) = 31
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        WholeYears && YEAR(First) = YEAR(Last), FORMAT(Last, "yyyy"),
+			        WholeYears, FORMAT(First, "yyyy") & " to " & FORMAT(Last, "yyyy"),
+			        FORMAT(First, "mmm yyyy") & " to " & FORMAT(Last, "mmm yyyy")
+			    )
+		lineageTag: b60d3784-25a8-57a6-930b-7a5ee9063f01
+
+	measure 'Latest Transaction' = MAX('Transactions'[Date])
+		formatString: d mmm yyyy
+		lineageTag: a8495ffc-aaa2-5dfd-9369-675185840692
+
+	column Column
+		dataType: string
+		isHidden
+		lineageTag: 1cee9713-b566-5682-aa3f-8792b57c2d05
+		summarizeBy: none
+		sourceColumn: Column
+
+	partition Metrics = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Column = text], {})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

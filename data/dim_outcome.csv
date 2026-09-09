@@ -1,0 +1,10 @@
+OutcomeKey,Outcome,OutcomeClass,IsApproved,OutcomeSort
+0,Approved,Approved,Yes,0
+1,Insufficient balance,Declined - funds,No,1
+2,Bad PIN,Declined - cardholder,No,2
+3,Technical glitch,Declined - technical,No,3
+4,Bad card number,Declined - card data,No,4
+5,Bad expiry date,Declined - card data,No,5
+6,Bad CVV,Declined - card data,No,6
+7,Bad postcode,Declined - card data,No,7
+8,Multiple errors,Declined - multiple,No,8

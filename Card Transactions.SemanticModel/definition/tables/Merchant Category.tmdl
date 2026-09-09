@@ -1,0 +1,37 @@
+/// The 109 merchant category codes used in this file, with the ISO description and a
+/// grouping into the eleven headings a card issuer would report spend under. The
+/// grouping is mine; the codes and descriptions are the source's.
+table 'Merchant Category'
+	lineageTag: 903b9e21-02b5-5983-92e7-772cb51bba36
+
+	column MCC
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 94230dac-7af6-5b9e-a71a-ce2490db127b
+		summarizeBy: none
+		sourceColumn: MCC
+
+	column 'Merchant Category'
+		dataType: string
+		lineageTag: bce754a4-6b20-5b04-acc0-6853a7424888
+		summarizeBy: none
+		sourceColumn: MerchantCategory
+
+	column 'Category Group'
+		dataType: string
+		lineageTag: b46ddc98-7924-5713-86a7-004096836ac6
+		summarizeBy: none
+		sourceColumn: CategoryGroup
+
+	partition 'Merchant Category' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_merchant_category.csv"), [Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"MCC", Int64.Type}, {"MerchantCategory", type text}, {"CategoryGroup", type text}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table

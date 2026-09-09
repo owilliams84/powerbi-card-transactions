@@ -1,0 +1,158 @@
+{
+  "population_clients": 2000,
+  "population_clients_with_transactions": 1219,
+  "population_clients_never_transacting": 781,
+  "population_cards_never_transacting": 2075,
+  "sample_clients": 160,
+  "dropped_columns_client": [
+    "address",
+    "latitude",
+    "longitude"
+  ],
+  "population_cards": 6146,
+  "dark_web_distinct_values": [
+    "No"
+  ],
+  "dropped_columns_card": [
+    "card_number",
+    "cvv",
+    "expires",
+    "card_on_dark_web"
+  ],
+  "mcc_codes": 109,
+  "mcc_groups": 13,
+  "population_transactions_labelled": 8914963,
+  "population_transactions_fraud": 13332,
+  "population_transactions": 13305915,
+  "sample_transactions": 1682640,
+  "sample_cards_on_file": 640,
+  "sample_cards_active": 575,
+  "date_min": "2010-01-01 00:02:00",
+  "date_max": "2019-10-31 23:59:00",
+  "negative_amounts": 80601,
+  "zero_amounts": 1485,
+  "error_values": {
+    "Insufficient Balance": 16630,
+    "Bad PIN": 4160,
+    "Technical Glitch": 3289,
+    "Bad Card Number": 991,
+    "Bad CVV": 796,
+    "Bad Expiration": 743,
+    "Bad Zipcode": 114,
+    "Bad PIN,Insufficient Balance": 36,
+    "Insufficient Balance,Technical Glitch": 28,
+    "Bad PIN,Technical Glitch": 15,
+    "Bad Card Number,Insufficient Balance": 13,
+    "Bad Expiration,Insufficient Balance": 7,
+    "Bad Expiration,Bad CVV": 6,
+    "Bad CVV,Insufficient Balance": 6,
+    "Bad Card Number,Bad CVV": 4,
+    "Bad Expiration,Technical Glitch": 4,
+    "Bad Card Number,Technical Glitch": 2,
+    "Bad Card Number,Bad Expiration": 1,
+    "Bad Zipcode,Insufficient Balance": 1
+  },
+  "multi_error_rows": 123,
+  "state_null_rows": 192666,
+  "state_null_and_online": 191821,
+  "state_null_not_online": 845,
+  "state_null_not_online_detail": {
+    "channels": {
+      "Chip": 845
+    },
+    "mccs": {
+      "4722": 845
+    }
+  },
+  "sample_labelled": 1127487,
+  "sample_fraud": 1858,
+  "partial_final_year": {
+    "year": 2019,
+    "months": 10
+  },
+  "fact_years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "fact_rows": 1682640,
+  "sample_approved": 1655794,
+  "sample_declined": 26846,
+  "decline_rate": 0.015955,
+  "spend_approved": 73568574.69,
+  "spend_all_rows": 75213419.18,
+  "spend_overstatement_if_declines_counted": 1644844.49,
+  "channel_mix_by_year": {
+    "2010": {
+      "Chip": 0.0,
+      "Online": 0.1076,
+      "Swipe": 0.8924
+    },
+    "2011": {
+      "Chip": 0.0,
+      "Online": 0.1075,
+      "Swipe": 0.8925
+    },
+    "2012": {
+      "Chip": 0.0,
+      "Online": 0.1097,
+      "Swipe": 0.8903
+    },
+    "2013": {
+      "Chip": 0.0,
+      "Online": 0.1138,
+      "Swipe": 0.8862
+    },
+    "2014": {
+      "Chip": 0.0,
+      "Online": 0.1149,
+      "Swipe": 0.8851
+    },
+    "2015": {
+      "Chip": 0.7375,
+      "Online": 0.1183,
+      "Swipe": 0.1442
+    },
+    "2016": {
+      "Chip": 0.7368,
+      "Online": 0.1184,
+      "Swipe": 0.1448
+    },
+    "2017": {
+      "Chip": 0.7403,
+      "Online": 0.1176,
+      "Swipe": 0.1422
+    },
+    "2018": {
+      "Chip": 0.7384,
+      "Online": 0.1163,
+      "Swipe": 0.1453
+    },
+    "2019": {
+      "Chip": 0.7302,
+      "Online": 0.1149,
+      "Swipe": 0.1549
+    }
+  },
+  "chip_switch": {
+    "first_chip_month": "2015-01",
+    "last_month_without_chip": "2014-12",
+    "share_month_before": 0.0,
+    "share_first_month": 0.7378,
+    "chip_rows_on_cards_without_a_chip": 0
+  },
+  "source_state_column": {
+    "distinct": 199,
+    "country_names": 147,
+    "null_rows": 1563700,
+    "georgia_the_country": 34,
+    "ga_the_us_state": 368206
+  }
+}

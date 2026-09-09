@@ -1,0 +1,48 @@
+/// How the card was presented: swiped, dipped into a chip reader, or keyed online.
+/// 'Card Type' here is the acquirer's sense of the phrase - card present or card not
+/// present - which is the split that matters for fraud, not the credit/debit one.
+table Channel
+	lineageTag: d36242c1-7b0b-54bd-a1d7-16db663eec94
+
+	column 'Channel Key'
+		dataType: int64
+		isHidden
+		isKey
+		formatString: 0
+		lineageTag: 98c48a7a-c34c-5066-9e25-1df10171efaf
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+	column Channel
+		dataType: string
+		lineageTag: 475155a6-115a-5865-99a3-a86d89519eb7
+		summarizeBy: none
+		sourceColumn: Channel
+		sortByColumn: 'Channel Sort'
+
+	column 'Channel Sort'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9c4d67ba-30a6-58d2-a142-402c1b66168c
+		summarizeBy: none
+		sourceColumn: ChannelSort
+
+	/// Card present (swipe, chip) or card not present (online).
+	column Presentment
+		dataType: string
+		lineageTag: 68602164-7020-5820-9388-3e903627b206
+		summarizeBy: none
+		sourceColumn: ChannelType
+
+	partition Channel = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_channel.csv"), [Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"ChannelKey", Int64.Type}, {"Channel", type text}, {"ChannelSort", Int64.Type}, {"ChannelType", type text}})
+				in
+				    #"Applied Types"
+
+	annotation PBI_ResultType = Table
