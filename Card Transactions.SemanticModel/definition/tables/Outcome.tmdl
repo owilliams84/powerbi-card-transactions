@@ -50,7 +50,7 @@ table Outcome
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(File.Contents("C:\\Users\\OmarWilliams\\OneDrive - MILESTONEBI\\Projects\\Claude Projects\\ClaudeCode\\Card-Transactions-Fraud\\data\\dim_outcome.csv"), [Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Source = Csv.Document(Web.Contents("https://raw.githubusercontent.com/owilliams84/powerbi-card-transactions/main/data/dim_outcome.csv"), [Delimiter=",", Columns=5, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Applied Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"OutcomeKey", Int64.Type}, {"Outcome", type text}, {"OutcomeSort", Int64.Type}, {"OutcomeClass", type text}, {"IsApproved", type text}})
 				in
