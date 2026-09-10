@@ -66,12 +66,12 @@ function Publish-Item {
     $body = Join-Path $env:TEMP "publish-$Kind.json"
     try {
         if ($existing) {
-            Write-Output "  $Kind '$DisplayName' exists ($existing) - updating definition"
+            Write-Host "  $Kind '$DisplayName' exists ($existing) - updating definition"
             @{ definition = @{ parts = $Parts } } | ConvertTo-Json -Depth 6 -Compress |
                 Set-Content $body -Encoding utf8
             $url = "$FABRIC/v1/workspaces/$WorkspaceId/$Kind/$existing/updateDefinition"
         } else {
-            Write-Output "  creating $Kind '$DisplayName'"
+            Write-Host "  creating $Kind '$DisplayName'"
             @{ displayName = $DisplayName; definition = @{ parts = $Parts } } |
                 ConvertTo-Json -Depth 6 -Compress | Set-Content $body -Encoding utf8
             $url = "$FABRIC/v1/workspaces/$WorkspaceId/$Kind"
