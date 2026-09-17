@@ -1,0 +1,174 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "pgCalendar",
+  "displayName": "Calendar",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1440,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F4F6FA'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0.0D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "displayArea": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "vMonthCal",
+      "target": "vCalMonthCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vStandMonthCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vTotalMonthCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vPeakMonthCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vWeekdayMonthCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vCalQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vStandQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vTotalQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vPeakQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vWeekdayQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vCalQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vStandQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vTotalQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vPeakQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vWeekdayQuarterCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vCalYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vStandYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vTotalYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vPeakYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vMonthCal",
+      "target": "vWeekdayYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vCalYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vStandYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vTotalYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vPeakYearCal",
+      "type": "NoFilter"
+    },
+    {
+      "source": "vYearCal",
+      "target": "vWeekdayYearCal",
+      "type": "NoFilter"
+    }
+  ]
+}

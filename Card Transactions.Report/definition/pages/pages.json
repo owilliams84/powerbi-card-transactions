@@ -5,7 +5,8 @@
     "pgChannels",
     "pgFraud",
     "pgCustomers",
-    "pgGeography"
+    "pgGeography",
+    "pgCalendar"
   ],
   "activePageName": "pgOverview"
 }

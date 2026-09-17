@@ -21,7 +21,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SHOTS = ROOT / "screenshots"
 BAND = (0x0A, 0x09, 0x17)
 PAGES = {"pgOverview": "overview", "pgChannels": "channels", "pgFraud": "fraud",
-         "pgCustomers": "customers", "pgGeography": "geography"}
+         "pgCustomers": "customers", "pgGeography": "geography",
+         # The calendar's four views are four builds (CAL_START_VIEW), one capture each.
+         "pgCalendar_Day": "calendar", "pgCalendar_Month": "calendar-month",
+         "pgCalendar_Quarter": "calendar-quarter", "pgCalendar_Year": "calendar-year"}
 
 # The channels page carries the report's one arresting picture - the January 2015 step - so it,
 # not the overview, is what the site's work card shows.

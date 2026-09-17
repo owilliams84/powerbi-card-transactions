@@ -21,6 +21,9 @@ import time
 import uuid
 from pathlib import Path
 
+import milestone_calendar
+from calendar_config import CALENDAR
+
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "Card Transactions.SemanticModel"
 DEFN = MODEL / "definition"
@@ -674,6 +677,12 @@ def main() -> None:
     "logicalId": "{tag('platform', 'model')}"
   }}
 }}""")
+
+    # The Calendar page: 'Cal ...' columns on the date table and its own measure table.
+    milestone_calendar.install_model(DEFN, CALENDAR, lambda *p: tag("calendar", *p))
+    n_calendar = len(milestone_calendar.measures(CALENDAR))
+    print(f"  + Calendar Metrics: {n_calendar} measures, "
+          f"{len(milestone_calendar.date_columns(CALENDAR))} calculated date columns")
 
     n_cols = sum(len(s["columns"]) for s in TABLES.values())
     n_parts = sum(len(s.get("files", [1])) for s in TABLES.values())

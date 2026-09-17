@@ -1,0 +1,295 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Calendar quarter view",
+  "name": "bmCalQuarter",
+  "options": {
+    "targetVisualNames": [
+      "vCalDayCal",
+      "vStandDayCal",
+      "vTotalDayCal",
+      "vPeakDayCal",
+      "vWeekdayDayCal",
+      "vBtnDayOnCal",
+      "vBtnMonthOffCal",
+      "vBtnQuarterOffCal",
+      "vBtnYearOffCal",
+      "vMonthCal",
+      "vYearCal",
+      "vCalMonthCal",
+      "vStandMonthCal",
+      "vTotalMonthCal",
+      "vPeakMonthCal",
+      "vWeekdayMonthCal",
+      "vBtnMonthOnCal",
+      "vBtnDayOffCal",
+      "vCalQuarterCal",
+      "vStandQuarterCal",
+      "vTotalQuarterCal",
+      "vPeakQuarterCal",
+      "vWeekdayQuarterCal",
+      "vBtnQuarterOnCal",
+      "vCalYearCal",
+      "vStandYearCal",
+      "vTotalYearCal",
+      "vPeakYearCal",
+      "vWeekdayYearCal",
+      "vBtnYearOnCal"
+    ],
+    "applyOnlyToTargetVisuals": true,
+    "suppressData": true,
+    "suppressActiveSection": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "pgCalendar",
+    "sections": {
+      "pgCalendar": {
+        "visualContainers": {
+          "vCalDayCal": {
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vStandDayCal": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vTotalDayCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vPeakDayCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vWeekdayDayCal": {
+            "singleVisual": {
+              "visualType": "barChart",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vBtnDayOnCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vBtnMonthOffCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "vBtnQuarterOffCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vBtnYearOffCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "vMonthCal": {
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vYearCal": {
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vCalMonthCal": {
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vStandMonthCal": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vTotalMonthCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vPeakMonthCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vWeekdayMonthCal": {
+            "singleVisual": {
+              "visualType": "barChart",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vBtnMonthOnCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vBtnDayOffCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "vCalQuarterCal": {
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {}
+            }
+          },
+          "vStandQuarterCal": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "vTotalQuarterCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "vPeakQuarterCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "vWeekdayQuarterCal": {
+            "singleVisual": {
+              "visualType": "barChart",
+              "objects": {}
+            }
+          },
+          "vBtnQuarterOnCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "vCalYearCal": {
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vStandYearCal": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vTotalYearCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vPeakYearCal": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vWeekdayYearCal": {
+            "singleVisual": {
+              "visualType": "barChart",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "vBtnYearOnCal": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

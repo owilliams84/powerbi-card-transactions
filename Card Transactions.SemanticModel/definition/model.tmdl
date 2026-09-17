@@ -20,3 +20,4 @@ ref table Geography
 ref table 'Fraud Status'
 ref table Transactions
 ref table Metrics
+ref table 'Calendar Metrics'
