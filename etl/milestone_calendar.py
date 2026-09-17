@@ -368,7 +368,7 @@ VAR Svg =
 {mb.indent(_card(f'"{cfg.big_word.upper()} MONTH"', _short(cfg, 'Best'), f'BestName & " " & SELECTEDVALUE({year})',
                  [('"Average per month"', _short(cfg, f'DIVIDE({V}, COUNTROWS(Pool))')),
                   ('"Smallest month"', 'WorstName & " &#183; " & ' + _short(cfg, 'Worst')),
-                  (f'"{cfg.big_word} month&apos;s share of the year"', f'FORMAT(DIVIDE(Best, {V}), "0.0%")')]), 1)}
+                  (f'"{cfg.big_word} month&apos;s share of the year" & IF([Cal Year Is Whole], "", " to date")', f'FORMAT(DIVIDE(Best, {V}), "0.0%")')]), 1)}
 RETURN
     {mb.svg_uri()}""", "Month"), None, None, category="ImageUrl"))
 
@@ -477,7 +477,7 @@ RETURN
     SELECTEDVALUE({year}) & " recorded " & {_phrase(cfg, 'Cur')}{count_bit}
         & IF(Prev > 0, ", " & {_words('Change')} & " on " & IF([Cal Year Is Whole], "", "the same period of ") & (SELECTEDVALUE({year}) - 1), "")
         & ". " & MINX(FILTER(Pool, [@v] = Best), {month}) & " alone was " & FORMAT(DIVIDE(Best, Cur), "0.0%")
-        & " of the year. Switch to Day to open a month." """, "Month")),
+        & " of the year" & IF([Cal Year Is Whole], "", " to date") & ". Switch to Day to open a month." """, "Month")),
         mb.measure("Standfirst Cal Quarter", _scoped(cfg, f"""
 VAR Cur = {V}
 VAR Pool = {year_pool}

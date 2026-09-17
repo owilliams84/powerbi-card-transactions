@@ -332,7 +332,7 @@ table 'Calendar Metrics'
 			    & "<line x1='16' y1='90' x2='460' y2='90' stroke='#E3E7EF'/>"
 			    & "<text x='16' y='111' font-size='11.5' fill='#4A5768'>" & "Average per month" & "</text><text x='460' y='111' font-size='11.5' font-weight='600' text-anchor='end' fill='#0A0917'>" & SWITCH(TRUE(), DIVIDE([Spend], COUNTROWS(Pool)) >= 1000000, "$" & FORMAT(DIVIDE([Spend], COUNTROWS(Pool)) / 1000000, "0.00") & "M", DIVIDE([Spend], COUNTROWS(Pool)) >= 10000, "$" & FORMAT(DIVIDE([Spend], COUNTROWS(Pool)) / 1000, "0.0") & "k", DIVIDE([Spend], COUNTROWS(Pool)) >= 1000, "$" & FORMAT(DIVIDE([Spend], COUNTROWS(Pool)) / 1000, "0.00") & "k", "$" & FORMAT(DIVIDE([Spend], COUNTROWS(Pool)), "0")) & "</text>"
 			    & "<text x='16' y='128' font-size='11.5' fill='#4A5768'>" & "Smallest month" & "</text><text x='460' y='128' font-size='11.5' font-weight='600' text-anchor='end' fill='#0A0917'>" & WorstName & " &#183; " & SWITCH(TRUE(), Worst >= 1000000, "$" & FORMAT(Worst / 1000000, "0.00") & "M", Worst >= 10000, "$" & FORMAT(Worst / 1000, "0.0") & "k", Worst >= 1000, "$" & FORMAT(Worst / 1000, "0.00") & "k", "$" & FORMAT(Worst, "0")) & "</text>"
-			    & "<text x='16' y='145' font-size='11.5' fill='#4A5768'>" & "Biggest month&apos;s share of the year" & "</text><text x='460' y='145' font-size='11.5' font-weight='600' text-anchor='end' fill='#0A0917'>" & FORMAT(DIVIDE(Best, [Spend]), "0.0%") & "</text>"
+			    & "<text x='16' y='145' font-size='11.5' fill='#4A5768'>" & "Biggest month&apos;s share of the year" & IF([Cal Year Is Whole], "", " to date") & "</text><text x='460' y='145' font-size='11.5' font-weight='600' text-anchor='end' fill='#0A0917'>" & FORMAT(DIVIDE(Best, [Spend]), "0.0%") & "</text>"
 			    & "</svg>"
 			RETURN
 			    "data:image/svg+xml;utf8," & SUBSTITUTE(SUBSTITUTE(Svg, "%", "%25"), "#", "%23"), REMOVEFILTERS('Date'[Cal Month]))
@@ -475,7 +475,7 @@ table 'Calendar Metrics'
 			    SELECTEDVALUE('Date'[Cal Year]) & " recorded " & SWITCH(TRUE(), Cur >= 1000000, "$" & FORMAT(Cur / 1000000, "0.00") & "M", Cur >= 10000, "$" & FORMAT(Cur / 1000, "0.0") & "k", Cur >= 1000, "$" & FORMAT(Cur / 1000, "0.00") & "k", "$" & FORMAT(Cur, "0")) & " in spend" & " from " & FORMAT([Approved Transactions], "#,0") & " transactions"
 			        & IF(Prev > 0, ", " & IF(Change >= 0, "up ", "down ") & FORMAT(ABS(Change), "0.0%") & " on " & IF([Cal Year Is Whole], "", "the same period of ") & (SELECTEDVALUE('Date'[Cal Year]) - 1), "")
 			        & ". " & MINX(FILTER(Pool, [@v] = Best), 'Date'[Cal Month]) & " alone was " & FORMAT(DIVIDE(Best, Cur), "0.0%")
-			        & " of the year. Switch to Day to open a month." , REMOVEFILTERS('Date'[Cal Month]))
+			        & " of the year" & IF([Cal Year Is Whole], "", " to date") & ". Switch to Day to open a month." , REMOVEFILTERS('Date'[Cal Month]))
 		lineageTag: 71f31e4c-f555-574b-a52d-d7845f6c5e4f
 
 	measure 'Standfirst Cal Quarter' =
