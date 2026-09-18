@@ -554,7 +554,7 @@ def _matrix(cfg: Config, F: mb.Fields, view: str, rows: dict | None, columns: di
     widths = [{"properties": {"value": lit(float(w + 10))}, "selector": {"metadata": F.ref(f"Cal Cell {view}")}}]
     if rows is not None and row_header_width is not None:
         widths.append({"properties": {"value": lit(row_header_width)}, "selector": {"metadata": rows["queryRef"]}})
-    return mb.visual(
+    node = mb.visual(
         f"vCal{view}{cfg.slug}", "pivotTable", 24, 176, 900, 700, 600,
         # No sortDefinition: the axis columns sort by their own sort-by columns, and an explicit
         # sort draws a sort arrow in the corner of the calendar.
@@ -587,6 +587,10 @@ def _matrix(cfg: Config, F: mb.Fields, view: str, rows: dict | None, columns: di
         },
         container=_title_chrome(F, f"Title Cal {view}", subtitle),
     )
+    # The cell is an image measure, so the default tooltip prints its value: the raw
+    # "data:image/svg+xml..." string. Everything worth knowing is already drawn in the cell.
+    node["visual"]["visualContainerObjects"]["visualTooltip"] = obj(show=lit(False))
+    return node
 
 
 def _weekday_bars(cfg: Config, F: mb.Fields, view: str) -> dict:
@@ -608,6 +612,25 @@ def _weekday_bars(cfg: Config, F: mb.Fields, view: str) -> dict:
         container=_title_chrome(F, "Title Cal Weekday",
                                 f"Average {cfg.value_noun} per {cfg.active_day}. Weekends in slate."),
     )
+
+
+def _hover_guard(name: str, x: int, y: int, w: int, h: int, z: int) -> dict:
+    """A fully transparent rectangle laid over the matrices. A matrix cell holding an image
+    measure shows the cell's raw value on hover - the whole "data:image/svg+xml..." string - and
+    that is the grid's own cell tooltip, not the visual tooltip: General > Tooltips off does not
+    remove it (tested in Desktop). A shape on top takes the hover instead. Nothing under it needs
+    a click: the view buttons and the dropdowns sit outside it."""
+    clear = {"show": lit(True), "fillColor": colour(PAPER), "transparency": lit(100.0)}
+    off = {"show": lit(False)}
+    container = mb.no_chrome()
+    container["visualHeader"] = obj(show=lit(False))     # no "..." over the calendar in the Service
+    node = mb.visual(name, "shape", x, y, w, h, z, container=container)
+    node["visual"]["objects"] = {
+        "shape": [{"properties": {"tileShape": lit("rectangle")}, "selector": {"id": "default"}}],
+        "fill": [{"properties": clear}, {"properties": clear, "selector": {"id": "default"}}],
+        "outline": [{"properties": off}, {"properties": off, "selector": {"id": "default"}}],
+    }
+    return node
 
 
 def _dropdown(cfg: Config, name: str, x: int, col: str, header: str, default) -> dict:
@@ -634,6 +657,7 @@ def build_page(cfg: Config) -> tuple[dict, list[dict], list[dict]]:
     common.append(mb.textbox(f"vViewLabel{s}", 708, 72, 120, 22, 395,
                              [[{"text": "VIEW", "size": 8.5, "color": MUTED, "bold": True}]]))
     common.append(mb.svg_image(f"vLegend{s}", 38, 848, 640, 20, 900, F.expr("Cal Legend")))
+    common.append(_hover_guard(f"vHoverGuard{s}", 24, 176, 900, 700, 950))
 
     month_slicer = _dropdown(cfg, f"vMonth{s}", 1070, "Cal Month", "MONTH", cfg.default_month)
     year_slicer = _dropdown(cfg, f"vYear{s}", 1246, "Cal Year", "YEAR", cfg.default_year)
