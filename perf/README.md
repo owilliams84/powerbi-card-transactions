@@ -37,7 +37,7 @@ kept to the minute, because we might need the time later.
 
 They are expensive for the same reason: VertiPaq compresses a column by building a dictionary of
 its distinct values, so cost tracks cardinality, not row count. `Transaction ID` has 1,682,640
-distinct values in 1,682,640 rows — the worst case, one entry per row, nothing to compress.
+distinct values in 1,682,640 rows: the worst case, one entry per row, nothing to compress.
 `Timestamp` has 1,365,222. Every other column in the file has fewer than 20,000.
 
 The star schema does not contain either. The transaction id was dropped because a row count is
@@ -60,7 +60,7 @@ report actually asks for. That single pair of decisions is 149 MB.
 | Active cards by month | 30.2 ms | 51.7 ms | 9.7 ms | 12.3 ms |
 | Top 200 cards | 22.9 ms | 33.0 ms | 13.6 ms | 15.7 ms |
 
-The flat model is slower on most queries — up to three times on a cold distinct count — but the
+The flat model is slower on most queries (up to three times on a cold distinct count), but the
 absolute numbers are tens of milliseconds, and on the heaviest query in the set the two are
 indistinguishable. **At 1.7 million rows, bad modelling does not make a report feel slow.**
 
@@ -83,11 +83,11 @@ spend, and it does not:
 | **2019** | **$6,347,500** | **−1.0%** | **$7,627,793** | **−17.6%** |
 
 Every year to 2018 agrees to thirteen decimal places. 2019 does not, because 2019 is a partial
-year — the data stops on 31 October.
+year: the data stops on 31 October.
 
 The star schema has a marked date table, so `DATEADD` shifts the visible ten months back to the
 same ten months of 2018 and compares like with like. The flat model has no date table, so
-year-on-year is done the only way left — arithmetic on a year column — and compares ten months
+year-on-year is done the only way left, arithmetic on a year column, and compares ten months
 of 2019 against twelve months of 2018.
 
 The flat model reports that spending fell 17.6%. It fell 1.0%. Nothing is broken, no error
@@ -103,7 +103,7 @@ that is wrong by a factor of seventeen, in a report nobody has reason to doubt, 
 Both models were measured on the same machine, in the same Power BI Desktop session type,
 against the same rows.
 
-- **Storage** comes from the engine's own DMVs — `DISCOVER_STORAGE_TABLE_COLUMNS` for
+- **Storage** comes from the engine's own DMVs: `DISCOVER_STORAGE_TABLE_COLUMNS` for
   dictionaries and `DISCOVER_STORAGE_TABLE_COLUMN_SEGMENTS` for compressed data. Attribute
   hierarchies arrive as pseudo-tables named `H$<table>$<column>` and are folded back onto the
   column they belong to, because they are part of what a column costs and they are largest
@@ -115,14 +115,14 @@ against the same rows.
   with one background process; a median does not.
 - Every query pair is checked for **identical results** before its timing is used. A performance
   comparison between two models that disagree measures nothing.
-- Differences below **8 ms** are treated as the harness, not the model — every query round-trips
+- Differences below **8 ms** are treated as the harness, not the model: every query round-trips
   through ADOMD, which costs a few milliseconds on its own.
 
 **Two things this does not measure.** Refresh time is not compared, because the flat model reads
 a 315 MB CSV and the star reads eleven small ones, which measures the file layout rather than
 the model. And auto date/time was left enabled in the flat model, but Desktop does not generate
-the hidden date tables for a TMDL-authored model, so that cost — real in a Desktop-authored PBIX
-— is absent from these figures. Both omissions favour the flat model.
+the hidden date tables for a TMDL-authored model, so that cost, real in a Desktop-authored PBIX,
+is absent from these figures. Both omissions favour the flat model.
 
 ## Running it
 
