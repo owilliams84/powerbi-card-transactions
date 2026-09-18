@@ -615,7 +615,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Each cell is one month, a quarter to a row. Shade ranks the month against the other eleven.'"
+                  "Value": "'Each cell is one month, a quarter to a row. Shade ranks the month against the others in the year.'"
                 }
               }
             },

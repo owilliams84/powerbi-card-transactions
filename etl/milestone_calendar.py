@@ -643,7 +643,7 @@ def build_page(cfg: Config) -> tuple[dict, list[dict], list[dict]]:
         "Day": _matrix(cfg, F, "Day", column(T, "Cal Week Row", " "), column(T, "Cal Day Short", "Day"),
                        f"Each cell is one day. Shade ranks the day against the other days of this month.", 14.0),
         "Month": _matrix(cfg, F, "Month", column(T, "Cal Quarter", " "), column(T, "Cal Month in Quarter", "Month"),
-                         "Each cell is one month, a quarter to a row. Shade ranks the month against the other eleven.", 44.0),
+                         "Each cell is one month, a quarter to a row. Shade ranks the month against the others in the year.", 44.0),
         "Quarter": _matrix(cfg, F, "Quarter", column(T, "Cal Year", " "), column(T, "Cal Quarter", "Quarter"),
                            "Each cell is one quarter, a year to a row. Shade ranks the quarter against all of them.", 50.0),
         "Year": _matrix(cfg, F, "Year", None, column(T, "Cal Year", "Year"),
