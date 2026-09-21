@@ -16,6 +16,7 @@ CALENDAR = Config(
     title="Spend calendar",
     ref="06 / CALENDAR",
     card_label="SPEND IN VIEW",
+    total_icon="coin",
     peak_word="Biggest",
     big_word="Biggest",
     active_day="active day",

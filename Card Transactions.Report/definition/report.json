@@ -62,6 +62,96 @@
           "name": "MilestoneMark.svg",
           "path": "MilestoneMark.svg",
           "type": "Image"
+        },
+        {
+          "name": "IconAlertCircle.svg",
+          "path": "IconAlertCircle.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconCancel.svg",
+          "path": "IconCancel.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconCard.svg",
+          "path": "IconCard.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconCardCheck.svg",
+          "path": "IconCardCheck.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconChip.svg",
+          "path": "IconChip.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconClipboardCheck.svg",
+          "path": "IconClipboardCheck.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconCoin.svg",
+          "path": "IconCoin.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconGauge.svg",
+          "path": "IconGauge.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconGlobe.svg",
+          "path": "IconGlobe.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconLaptop.svg",
+          "path": "IconLaptop.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconLayers.svg",
+          "path": "IconLayers.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconPeople.svg",
+          "path": "IconPeople.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconPercent.svg",
+          "path": "IconPercent.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconPersonCoin.svg",
+          "path": "IconPersonCoin.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconReceipt.svg",
+          "path": "IconReceipt.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconShieldAlert.svg",
+          "path": "IconShieldAlert.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconSliders.svg",
+          "path": "IconSliders.svg",
+          "type": "Image"
+        },
+        {
+          "name": "IconWarning.svg",
+          "path": "IconWarning.svg",
+          "type": "Image"
         }
       ]
     },

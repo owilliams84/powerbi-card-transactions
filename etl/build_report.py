@@ -19,6 +19,7 @@ import sys
 import time
 from pathlib import Path
 
+import milestone_icons
 import milestone_calendar
 import milestone_pbir
 from calendar_config import CALENDAR
@@ -304,9 +305,13 @@ def image(name: str, x: int, y: int, w: int, h: int, z: int, resource: str) -> d
     return node
 
 
+# Icons the KPI strips ask for; main() registers exactly these as report resources.
+USED_ICONS: set[str] = set()
+
+
 def kpi_card(name: str, x: int, y: int, w: int, h: int, z: int, measures: list[dict],
-             filters: list | None = None, value_size: float = 17.0) -> dict:
-    return visual(
+             filters: list | None = None, value_size: float = 17.0, icons: list[str] | None = None) -> dict:
+    node = visual(
         name, "cardVisual", x, y, w, h, z,
         query={"queryState": {"Data": {"projections": measures}}},
         objects={
@@ -328,6 +333,11 @@ def kpi_card(name: str, x: int, y: int, w: int, h: int, z: int, measures: list[d
         },
         filters=filters,
     )
+    if icons:
+        # One icon to the left of each value, from etl/milestone_icons.py.
+        node["visual"]["objects"]["image"] = milestone_icons.card_images(measures, icons, w)
+        USED_ICONS.update(icons)
+    return node
 
 
 def slicer(name: str, x: int, y: int, w: int, h: int, z: int, table: str, col: str,
@@ -477,7 +487,7 @@ def page_overview() -> tuple[dict, list[dict]]:
         m("Average Transaction", "Average purchase"),
         m("Decline Rate %", "Decline rate"),
         m("Fraud Rate per 10k", "Fraud per 10k"),
-    ]))
+    ], icons=["card-check", "coin", "receipt", "cancel", "shield-alert"]))
 
     v.append(visual(
         "vTrend", "lineChart", 24, 284, 900, 300, 600,
@@ -596,7 +606,7 @@ def page_channels() -> tuple[dict, list[dict]]:
         m("Card Not Present Share %", "Card not present"),
         m("Decline Rate %", "Decline rate"),
         m("Technical Decline Rate %", "Technical declines"),
-    ]))
+    ], icons=["chip", "globe", "laptop", "cancel", "sliders"]))
 
     v.append(visual(
         "vChannelMonth", "lineChart", 24, 284, 900, 300, 600,
@@ -693,7 +703,7 @@ def page_fraud() -> tuple[dict, list[dict]]:
         m("Fraud Transactions", "Confirmed fraud"),
         m("Fraud Rate per 10k", "Fraud per 10k"),
         m("Fraud Rate per 10k (all rows)", "If unlabelled counted clean"),
-    ]))
+    ], icons=["clipboard-check", "percent", "warning", "shield-alert", "alert-circle"]))
 
     v.append(visual(
         "vFraudChannel", "barChart", 24, 284, 452, 300, 600,
@@ -807,7 +817,7 @@ def page_customers() -> tuple[dict, list[dict]]:
         m("Spend per Client", "Spend per client"),
         m("Total Credit Limit", "Combined limit"),
         m("Annual Spend to Limit", "Spend to limit, a year"),
-    ]))
+    ], icons=["people", "card", "person-coin", "layers", "gauge"]))
 
     v.append(visual(
         "vScore", "barChart", 24, 284, 452, 300, 600,
@@ -906,7 +916,7 @@ def page_geography() -> tuple[dict, list[dict]]:
         m("Approved Transactions", "Approved"),
         m("Average Transaction", "Average purchase"),
         m("Fraud Rate per 10k", "Fraud per 10k"),
-    ]))
+    ], icons=["coin", "globe", "card-check", "receipt", "shield-alert"]))
 
     v.append(visual(
         "vLocType", "barChart", 24, 284, 452, 300, 600,
@@ -1122,7 +1132,9 @@ def main() -> None:
         "resourcePackages": [
             {"name": "RegisteredResources", "type": "RegisteredResources",
              "items": [{"name": THEME_NAME, "path": THEME_NAME, "type": "CustomTheme"},
-                       {"name": MARK_NAME, "path": MARK_NAME, "type": "Image"}]},
+                       {"name": MARK_NAME, "path": MARK_NAME, "type": "Image"}]
+                      + [{"name": n, "path": n, "type": "Image"}
+                         for n in milestone_icons.resources(USED_ICONS)]},
             {"name": "SharedResources", "type": "SharedResources",
              "items": [{"name": "CY25SU12", "path": "BaseThemes/CY25SU12.json",
                         "type": "BaseTheme"}]},
@@ -1133,6 +1145,8 @@ def main() -> None:
     RESOURCES.mkdir(parents=True, exist_ok=True)
     write_json(RESOURCES / THEME_NAME, theme())
     shutil.copyfile(ASSETS / "milestone-mark.svg", RESOURCES / MARK_NAME)
+    for icon_file, svg in milestone_icons.resources(USED_ICONS).items():
+        (RESOURCES / icon_file).write_text(svg, encoding="utf-8", newline="\n")
 
     write_json(REPORT / "definition.pbir", {
         "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",

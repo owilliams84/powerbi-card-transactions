@@ -35,6 +35,7 @@ from dataclasses import dataclass, field
 from datetime import date, timedelta
 from pathlib import Path
 
+import milestone_icons
 import milestone_pbir as mb
 from milestone_pbir import (BAD, BODY, CARD, GOLD, GOOD, INK, MUTED, NAVY, PAPER, RULE, SLATE,
                             colour, column, lit, obj)
@@ -66,6 +67,8 @@ class Config:
     page_name: str = "pgCalendar"
     page_display: str = "Calendar"
     card_label: str = "SALES IN VIEW"
+    total_icon: str = "coin"         # milestone_icons name drawn beside the total; "bars" suits a count
+    peak_icon: str = "calendar-check"  # and beside the busiest day, month, quarter or year
     peak_word: str = "Busiest"       # "Busiest day", "Biggest month" use their own words below
     big_word: str = "Biggest"
     active_day: str = "trading day"  # a day on which the value is above zero
@@ -196,14 +199,17 @@ def _words(change: str) -> str:
     return f'IF({change} >= 0, "up ", "down ") & FORMAT(ABS({change}), "0.0%")'
 
 
-def _card(label: str, value: str, note: str, rows: list[tuple[str, str]]) -> str:
-    """KPI card frame, 476x152. Arguments are DAX text expressions; `note` may carry <tspan>."""
+def _card(label: str, value: str, note: str, rows: list[tuple[str, str]], icon: str | None = None) -> str:
+    """KPI card frame, 476x152. Arguments are DAX text expressions; `note` may carry <tspan>.
+    `icon` names a milestone_icons icon, drawn left of the value, which moves right to clear it."""
+    value_x = 56 if icon else 16
     ys = [111, 128, 145] if len(rows) == 3 else [114, 134]
     body = [
         f'"<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'{CARD_W}\' height=\'{CARD_H}\' viewBox=\'0 0 {CARD_W} {CARD_H}\' font-family=\'Segoe UI, sans-serif\'>"',
         f'& "<rect x=\'0.5\' y=\'0.5\' width=\'{CARD_W - 1}\' height=\'{CARD_H - 1}\' rx=\'4\' fill=\'#FFFFFF\' stroke=\'{RULE}\'/><rect width=\'3\' height=\'{CARD_H}\' fill=\'{GOLD}\'/>"',
         f'& "<text x=\'16\' y=\'24\' font-size=\'11\' font-weight=\'700\' fill=\'{MUTED}\' letter-spacing=\'0.4\'>" & {label} & "</text>"',
-        f'& "<text x=\'16\' y=\'58\' font-size=\'28\' font-weight=\'700\' fill=\'{INK}\'>" & {value} & "</text>"',
+        *([f'& "<g transform=\'translate(16 33) scale(0.625)\'>{milestone_icons.markup(icon)}</g>"'] if icon else []),
+        f'& "<text x=\'{value_x}\' y=\'58\' font-size=\'28\' font-weight=\'700\' fill=\'{INK}\'>" & {value} & "</text>"',
         f'& "<text x=\'16\' y=\'77\' font-size=\'11.5\' fill=\'{MUTED}\'>" & {note} & "</text>"',
         f'& "<line x1=\'16\' y1=\'90\' x2=\'{CARD_W - 16}\' y2=\'90\' stroke=\'{RULE}\'/>"',
     ]
@@ -323,7 +329,7 @@ VAR NoteText =
         "Nothing a year earlier to compare with"
     )
 VAR Svg =
-{mb.indent(_card(f'"{cfg.card_label}"', _short(cfg, 'Cur'), 'NoteText', rows), 1)}
+{mb.indent(_card(f'"{cfg.card_label}"', _short(cfg, 'Cur'), 'NoteText', rows, icon=cfg.total_icon), 1)}
 RETURN
     {mb.svg_uri()}""", view), None, None, category="ImageUrl")
 
@@ -338,7 +344,7 @@ RETURN
 VAR Cur = {V}
 VAR YearCount = COUNTROWS(FILTER(VALUES({year}), {V} > 0))
 VAR Svg =
-{mb.indent(_card(f'"{cfg.card_label}"', _short(cfg, 'Cur'), '"All " & YearCount & " years - nothing earlier to compare with"', rows_all), 1)}
+{mb.indent(_card(f'"{cfg.card_label}"', _short(cfg, 'Cur'), '"All " & YearCount & " years - nothing earlier to compare with"', rows_all, icon=cfg.total_icon), 1)}
 RETURN
     {mb.svg_uri()}""", "Quarter"), None, None, category="ImageUrl"))
 
@@ -353,7 +359,7 @@ VAR Svg =
 {mb.indent(_card(f'"{cfg.peak_word.upper()} DAY"', _short(cfg, 'Best'), 'FORMAT(BestDate, "ddd d mmmm yyyy")',
                  [(f'"Average per {cfg.active_day}"', _short(cfg, '[Cal Avg per Active Day]')),
                   (f'"Days with {cfg.none_note}"', 'Quiet & " of " & DaysAll'),
-                  (f'"{cfg.peak_word} day&apos;s share of the month"', f'FORMAT(DIVIDE(Best, {V}), "0.0%")')]), 1)}
+                  (f'"{cfg.peak_word} day&apos;s share of the month"', f'FORMAT(DIVIDE(Best, {V}), "0.0%")')], icon=cfg.peak_icon), 1)}
 RETURN
     {mb.svg_uri()}""", None, None, category="ImageUrl"))
 
@@ -368,7 +374,7 @@ VAR Svg =
 {mb.indent(_card(f'"{cfg.big_word.upper()} MONTH"', _short(cfg, 'Best'), f'BestName & " " & SELECTEDVALUE({year})',
                  [('"Average per month"', _short(cfg, f'DIVIDE({V}, COUNTROWS(Pool))')),
                   ('"Smallest month"', 'WorstName & " &#183; " & ' + _short(cfg, 'Worst')),
-                  (f'"{cfg.big_word} month&apos;s share of the year" & IF([Cal Year Is Whole], "", " to date")', f'FORMAT(DIVIDE(Best, {V}), "0.0%")')]), 1)}
+                  (f'"{cfg.big_word} month&apos;s share of the year" & IF([Cal Year Is Whole], "", " to date")', f'FORMAT(DIVIDE(Best, {V}), "0.0%")')], icon=cfg.peak_icon), 1)}
 RETURN
     {mb.svg_uri()}""", "Month"), None, None, category="ImageUrl"))
 
@@ -390,7 +396,7 @@ VAR Svg =
 {mb.indent(_card(f'"{cfg.big_word.upper()} QUARTER"', _short(cfg, 'Best'), 'BestName',
                  [('"Average per quarter"', _short(cfg, 'DIVIDE(AllValue, COUNTROWS(Pool))')),
                   ('"Q4" & ShareNote', f'FORMAT(DIVIDE(CALCULATE({V}, {qn} = "Q4", WholeYears), WholeValue), "0.0%")'),
-                  ('"Q1" & ShareNote', f'FORMAT(DIVIDE(CALCULATE({V}, {qn} = "Q1", WholeYears), WholeValue), "0.0%")')]), 1)}
+                  ('"Q1" & ShareNote', f'FORMAT(DIVIDE(CALCULATE({V}, {qn} = "Q1", WholeYears), WholeValue), "0.0%")')], icon=cfg.peak_icon), 1)}
 RETURN
     {mb.svg_uri()}""", "Quarter"), None, None, category="ImageUrl"))
 
@@ -416,7 +422,7 @@ VAR Svg =
 {mb.indent(_card(f'"{cfg.big_word.upper()} YEAR"', _short(cfg, 'Best'), 'FORMAT(BestYear, "0")',
                  [('IF(PartYears > 0, "Average per whole year", "Average per year")', _short(cfg, 'AVERAGEX(Pool, [@v])')),
                   ('YearLast & " on " & (YearLast - 1)', _tspan('ChangeLast')),
-                  ('(YearFirst + 1) & " on " & YearFirst', _tspan('ChangeSecond'))]), 1)}
+                  ('(YearFirst + 1) & " on " & YearFirst', _tspan('ChangeSecond'))], icon=cfg.peak_icon), 1)}
 RETURN
     {mb.svg_uri()}""", "Year"), None, None, category="ImageUrl"))
 

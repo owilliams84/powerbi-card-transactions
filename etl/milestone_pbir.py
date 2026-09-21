@@ -23,7 +23,9 @@ from __future__ import annotations
 import uuid
 from pathlib import Path
 
-VERSION = "1.1.0"  # 1.1.0: tone()/diverging_bar() take higher_is_better (Workforce page 05)
+import milestone_icons
+
+VERSION = "1.2.0"  # 1.2.0: card() takes an icon from milestone_icons, drawn left of the value
 
 # --------------------------------------------------------------------------------------------
 # Tokens
@@ -530,9 +532,12 @@ def ring_label(cx: int, cy: int, text: str) -> str:
     return f'"<text x=\'{cx}\' y=\'{cy + 5}\' font-size=\'13\' font-weight=\'700\' text-anchor=\'middle\' fill=\'{INK}\'>" & {text} & "</text>"'
 
 
-def card(label: str, value: str, note: str, row1: tuple, row2: tuple, graphic: str) -> str:
+def card(label: str, value: str, note: str, row1: tuple, row2: tuple, graphic: str,
+         icon: str | None = None) -> str:
     """The 336x140 KPI card frame as DAX text. Arguments are DAX text expressions; each row is
-    (left text, right text, right colour). `graphic` fills the top-right corner."""
+    (left text, right text, right colour). `graphic` fills the top-right corner. `icon` names a
+    milestone_icons icon, drawn 30px high to the left of the value, which moves right to clear it."""
+    value_x = 56 if icon else 16
     def row(y: int, r: tuple) -> str:
         return (f'"<text x=\'16\' y=\'{y}\' font-size=\'11.5\' fill=\'{BODY}\'>" & {r[0]} & "</text>'
                 f'<text x=\'320\' y=\'{y}\' font-size=\'11.5\' font-weight=\'600\' text-anchor=\'end\' fill=\'" & {r[2]} & "\'>" & {r[1]} & "</text>"')
@@ -540,7 +545,8 @@ def card(label: str, value: str, note: str, row1: tuple, row2: tuple, graphic: s
         f'"<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'336\' height=\'140\' viewBox=\'0 0 336 140\' font-family=\'Segoe UI, sans-serif\'>"',
         f'& "<rect x=\'0.5\' y=\'0.5\' width=\'335\' height=\'139\' rx=\'4\' fill=\'#FFFFFF\' stroke=\'{RULE}\'/><rect width=\'3\' height=\'140\' fill=\'{GOLD}\'/>"',
         f'& "<text x=\'16\' y=\'24\' font-size=\'11\' font-weight=\'700\' fill=\'{MUTED}\' letter-spacing=\'0.4\'>" & {label} & "</text>"',
-        f'& "<text x=\'16\' y=\'58\' font-size=\'28\' font-weight=\'700\' fill=\'{INK}\'>" & {value} & "</text>"',
+        *([f'& "<g transform=\'translate(16 33) scale(0.625)\'>{milestone_icons.markup(icon)}</g>"'] if icon else []),
+        f'& "<text x=\'{value_x}\' y=\'58\' font-size=\'28\' font-weight=\'700\' fill=\'{INK}\'>" & {value} & "</text>"',
         f'& "<text x=\'16\' y=\'76\' font-size=\'11.5\' fill=\'{MUTED}\'>" & {note} & "</text>"',
         f'& "<line x1=\'16\' y1=\'88\' x2=\'320\' y2=\'88\' stroke=\'{RULE}\'/>"',
         f"& {row(107, row1)}",
